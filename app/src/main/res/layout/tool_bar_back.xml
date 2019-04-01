@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_toolbar_height"
+        android:background="@color/main_color"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp"
+        >
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="@dimen/default_toolbar_height"
+            android:layout_height="@dimen/default_toolbar_height"
+            android:src="@mipmap/toolbar_back_white"
+          />
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@drawable/black"
+            android:textSize="@dimen/tool_bar_test_view_size"
+            />
+
+        <TextView
+            android:id="@+id/tv_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="关闭"
+            android:layout_gravity="right"
+            android:layout_marginRight="20dp"
+            android:textSize="@dimen/default_small_text_size"
+            android:textColor="@color/tool_bar_black"
+            android:visibility="gone"
+            />
+    </android.support.v7.widget.Toolbar>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:background="@color/tool_bar_splite_line"
+        android:visibility="gone"
+        />
+</LinearLayout>

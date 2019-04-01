@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">MVP_Template</string>
+
+    <string name="open">open</string>
+    <string name="close">close</string>
+    <string name="tab_function">首页</string>
+    <string name="tab_news_center">新闻</string>
+    <string name="tab_recommand">推荐</string>
+    <string name="tab_video_on_demand">点播</string>
+    <string name="load_error">加载失败,点击重试</string>
+    <string name="please_input_search_content">请输入搜索内容</string>
+
+    <string name="jump">跳过</string>
+
+    <!--Permission-->
+    <string name="rationale_ask">This app may not work correctly without the requested permissions.</string>
+    <string name="rationale_ask_again">
+        点击前往设置中心，开启嗨麦直播所需要的权限。
+    </string>
+    <string name="title_settings_dialog">权限请求</string>
+    <string name="rationale_camera">需要获取如下权限：相机</string>
+    <string name="rationale_photo">需要获取如下权限：相机</string>
+    <string name="rationale_wr">需要获取如下权限：手机读写、存储</string>
+    <string name="rationale_r">需要获取如下权限：手机读写权限</string>
+    <string name="rationale">需要获取如下权限：手机存储、录音摄像头</string>
+    <string name="rationale_record_audio">需要获取如下权限：相机、麦克风</string>
+    <string name="returned_from_app_settings_to_activity">
+        Returned from app settings to MainActivity with the following permissions:
+    </string>
+</resources>

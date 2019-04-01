@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#1775ef</color>
+    <color name="colorPrimaryDark">#1775ef</color>
+    <color name="colorAccent">#1775ef</color>
+
+    <color name="colorRed">#a6ef0404</color>
+    <color name="colorWhite">#a6fffefe</color>
+    <item name="transparent" type="drawable">#00000000</item>
+    <item name="red" type="drawable">#a6ef0404</item>
+    <item name="white" type="drawable">#ffffffff</item>
+    <item name="yellow" type="drawable">#ffff9000</item>
+    <item name="green" type="drawable">#26ba30</item>
+    <item name="black" type="drawable">#000000</item>
+    <color name="holo_blue_bright">#ff00ddff</color>
+    <color name="holo_green_light">#ff99cc00</color>
+    <color name="holo_orange_light">#ffffbb33</color>
+    <color name="holo_red_light">#ffff4444</color>
+    <color name="common_bg">#E6E6EB</color>
+    <color name="common_white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
+    <color name="card_view_background">#ffffff</color>
+    <color name="font_normal">#555555</color>
+    <color name="window_background">#f5f5f5</color>
+    <color name="background_tab_pressed">#6633B5E5</color>
+    <color name="shimmer_color">#a2878787</color>
+    <color name="province_line_border">#C7C7C7</color>
+    <color name="tv_message">#232323</color>
+    <color name="app_bg">#EEEEEE</color>
+    <color name="bg_menu_color">#F5F5F5</color>
+    <color name="main_color">#1775ef</color>
+    <color name="line">#E1E1E1</color>
+    <color name="transparent">#00000000</color>
+    <color name="tab_normal_color">#999999</color>
+    <color name="black_alpha_45">#71000000</color>
+    <color name="black_alpha_32">#32000000</color>
+
+    <!--toolBar-->
+    <color name="tool_bar_black">#000000</color>
+    <color name="tool_bar_splite_line">#eaeaea</color>
+
+</resources>
