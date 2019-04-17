@@ -6,11 +6,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.release.mvp.R;
-import com.release.mvp.ui.base.MyBaseAdapter;
-import com.release.mvp.modle.RecommendPageBean;
-import com.release.mvp.utils.GlideApp;
-
+import com.release.mvp.ui.base.IBaseAdapter;
+import com.release.mvp.bean.RecommendPageBean;
 import java.util.List;
 
 import butterknife.BindView;
@@ -21,7 +20,7 @@ import butterknife.ButterKnife;
  * @create 2019/3/22
  * @Describe
  */
-public class RecommendAdapter extends MyBaseAdapter<RecommendPageBean.DataBean> {
+public class RecommendAdapter extends IBaseAdapter<RecommendPageBean.DataBean> {
 
     public RecommendAdapter(Context context, List<RecommendPageBean.DataBean> datas) {
         super(context, datas);
@@ -40,7 +39,7 @@ public class RecommendAdapter extends MyBaseAdapter<RecommendPageBean.DataBean> 
         }
 
         RecommendPageBean.DataBean dataBean = mDatas.get(position);
-        GlideApp.with(mContext).load(dataBean.getImage()).optionalCenterCrop().into(holder.iv_bg);
+        Glide.with(mContext).load(dataBean.getImage()).optionalCenterCrop().into(holder.iv_bg);
         holder.tv_title.setText(dataBean.getTitle());
 
         return view;

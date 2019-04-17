@@ -29,15 +29,24 @@
     <color name="tv_message">#232323</color>
     <color name="app_bg">#EEEEEE</color>
     <color name="bg_menu_color">#F5F5F5</color>
-    <color name="main_color">#1775ef</color>
     <color name="line">#E1E1E1</color>
     <color name="transparent">#00000000</color>
     <color name="tab_normal_color">#999999</color>
     <color name="black_alpha_45">#71000000</color>
     <color name="black_alpha_32">#32000000</color>
+    <color name="gray">#959393</color>
+
+    <color name="divider_line">#dddddd</color>
+    <color name="special_text">#e51c23</color>
+
 
     <!--toolBar-->
     <color name="tool_bar_black">#000000</color>
     <color name="tool_bar_splite_line">#eaeaea</color>
+
+    <color name="item_special_bg">#FF4081</color>
+    <color name="item_photo_set_bg">#5677fc</color>
+
+    <color name="photo_set_bg">#44000000</color>
 
 </resources>

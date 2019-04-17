@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.page.news_page.NewsDetailActivity">
+
+    <com.release.mvp.widget.PullScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include layout="@layout/tool_bar_back" />
+
+            <include layout="@layout/layout_news_content" />
+
+            <include layout="@layout/layout_pull_scrollview_foot" />
+        </LinearLayout>
+    </com.release.mvp.widget.PullScrollView>
+
+    <include layout="@layout/layout_common_empty" />
+
+    <LinearLayout
+        android:id="@+id/ll_top_bar2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolBar2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_toolbar_height"
+            android:background="#ffffff"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp"
+            >
+
+            <ImageView
+                android:id="@+id/back2"
+                android:layout_width="@dimen/default_toolbar_height"
+                android:layout_height="@dimen/default_toolbar_height"
+                android:src="@mipmap/toolbar_back"
+                />
+            <TextView
+                android:id="@+id/tv_title2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@drawable/black"
+                android:textSize="@dimen/tool_bar_test_view_size"
+                />
+
+            <TextView
+                android:id="@+id/tv_right2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="关闭"
+                android:layout_gravity="right"
+                android:layout_marginRight="20dp"
+                android:textSize="@dimen/default_small_text_size"
+                android:textColor="@color/black"
+                android:visibility="gone"
+                />
+        </androidx.appcompat.widget.Toolbar>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.3dp"
+            android:background="@color/tool_bar_splite_line"
+            android:visibility="visible"
+            />
+    </LinearLayout>
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_coping"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
+        android:src="@mipmap/ic_arrow_upward"
+        app:layout_behavior="com.dl7.mvp.widget.behavior.ScrollAwareFABBehavior" />
+
+</FrameLayout>

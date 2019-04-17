@@ -1,7 +1,7 @@
 package com.release.mvp.utils;
 
-import com.trello.rxlifecycle2.components.RxFragment;
-import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
+import com.trello.rxlifecycle3.components.RxFragment;
+import com.trello.rxlifecycle3.components.support.RxAppCompatActivity;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;

@@ -1,7 +1,7 @@
 package com.release.mvp.http.api;
 
 
-import com.release.mvp.modle.RecommendPageBean;
+import com.release.mvp.bean.RecommendPageBean;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;

@@ -2,7 +2,6 @@ package com.release.mvp.ui.guide;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -13,9 +12,10 @@ import com.release.mvp.presenter.guide.GuideView;
 import com.release.mvp.ui.adapter.GuideViewPagerAdapter;
 import com.release.mvp.ui.base.BaseActivity;
 import com.release.mvp.ui.home.MainActivity;
-import com.release.mvp.utils.LogUtils;
+import com.release.mvp.utils.StatusBarUtil;
 import com.release.mvp.widget.pageTransformer.CubeOutTransformer;
 
+import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 
 /**
@@ -24,7 +24,6 @@ import butterknife.BindView;
  * @Describe
  */
 public class GuideActivity extends BaseActivity implements GuideView {
-
 
     @BindView(R.id.view_viewpager)
     ViewPager mViewViewpager;
@@ -63,7 +62,6 @@ public class GuideActivity extends BaseActivity implements GuideView {
         mViewViewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                LogUtils.i("positionOffsetPixels", "----------------" + positionOffsetPixels);
                 int translate = (int) (dot_width * (position + positionOffset));
                 mDotFocus.setTranslationX(translate);
             }
@@ -87,8 +85,7 @@ public class GuideActivity extends BaseActivity implements GuideView {
     }
 
     @Override
-    public void initData() {
-
+    public void updateViews(boolean isRefresh) {
         mPersenter.imageViews(this, mDotGroup);
         mViewViewpager.setAdapter(new GuideViewPagerAdapter(mPersenter.imageList));
         //效果
@@ -96,9 +93,8 @@ public class GuideActivity extends BaseActivity implements GuideView {
 //        viewpager.setPageTransformer(true, new DepthPageTransformer());
 //        viewpager.setPageTransformer(true, new RotatePageTransformer());
         mViewViewpager.setPageTransformer(true, new CubeOutTransformer());
-
-
     }
+
 
     @Override
     public void goHome() {
@@ -110,5 +106,10 @@ public class GuideActivity extends BaseActivity implements GuideView {
     protected void onDestroy() {
         mPersenter.onDestroy();
         super.onDestroy();
+    }
+
+    @Override
+    protected void setStatusBar() {
+        StatusBarUtil.setTransparentForImageViewInFragment(this, null);
     }
 }

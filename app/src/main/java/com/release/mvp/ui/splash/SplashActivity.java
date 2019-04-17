@@ -2,7 +2,7 @@ package com.release.mvp.ui.splash;
 
 import android.Manifest;
 import android.os.Build;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
 
@@ -13,6 +13,7 @@ import com.release.mvp.presenter.splash.SplashView;
 import com.release.mvp.ui.base.BaseActivity;
 import com.release.mvp.ui.guide.GuideActivity;
 import com.release.mvp.ui.home.MainActivity;
+import com.release.mvp.utils.StatusBarUtil;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -55,7 +56,7 @@ public class SplashActivity extends BaseActivity implements SplashView {
     }
 
     @Override
-    public void initData() {
+    public void updateViews(boolean isRefresh) {
 
     }
 
@@ -163,4 +164,8 @@ public class SplashActivity extends BaseActivity implements SplashView {
         mPresenter.showNotice(this, getResources().getString(R.string.rationale_ask_again), mRequest, isNever);
     }
 
+    @Override
+    protected void setStatusBar() {
+        StatusBarUtil.setTransparent(this);
+    }
 }

@@ -1,38 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dl_drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context=".ui.home.MainActivity">
 
-    <android.support.v4.widget.DrawerLayout
-        android:id="@+id/dl_drawer"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <fragment
+            android:id="@+id/fragment_nav"
+            android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/nav_bottom" />
 
-            <com.release.mvp.widget.NoScrollViewPager
-                android:id="@+id/view_pager"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-            <include layout="@layout/bottom_table_layout" />
-
-        </LinearLayout>
-
-        <include layout="@layout/left_drawer_layout" />
-
-        <View
+        <com.release.mvp.widget.bottom_navigation.BottomNavigationViewEx
+            android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:layout_above="@id/fl_bottom"
-            android:background="@drawable/bg_rect_gradient_black_translate2_90" />
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            app:itemTextColor="@color/selector_nav_text"
+            app:labelVisibilityMode="labeled"
+            app:menu="@menu/bottom_menu" />
 
-    </android.support.v4.widget.DrawerLayout>
+    </LinearLayout>
 
-</RelativeLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/left_navigation"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/white"
+        android:tag="left"
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/left_menu" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

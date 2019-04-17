@@ -16,7 +16,7 @@
 
 package com.release.mvp.widget.pageTransformer;
 
-import android.support.v4.view.ViewPager.PageTransformer;
+import androidx.viewpager.widget.ViewPager.PageTransformer;
 import android.view.View;
 /**
  * @author Mr.release

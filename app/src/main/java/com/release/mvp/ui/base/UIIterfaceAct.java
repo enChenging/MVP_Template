@@ -13,6 +13,6 @@ interface UIIterfaceAct {
 
     void initListener();
 
-    void initData();
+    void updateViews(boolean isRefresh);
 
 }

@@ -3,12 +3,14 @@
 
     <string name="open">open</string>
     <string name="close">close</string>
-    <string name="tab_function">首页</string>
-    <string name="tab_news_center">新闻</string>
-    <string name="tab_recommand">推荐</string>
-    <string name="tab_video_on_demand">点播</string>
+
     <string name="load_error">加载失败,点击重试</string>
     <string name="please_input_search_content">请输入搜索内容</string>
+
+    <string name="title_news">新闻</string>
+    <string name="title_video">视频</string>
+    <string name="title_recommend">推荐</string>
+    <string name="title_kinds">更多</string>
 
     <string name="jump">跳过</string>
 

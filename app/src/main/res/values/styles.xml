@@ -12,7 +12,7 @@
     </style>
 
     <style name="app_launcher" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowBackground">@mipmap/splash</item>
+        <item name="android:windowBackground">@mipmap/bg_monkey</item>
         <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
     </style>
 
@@ -38,6 +38,20 @@
         <item name="android:backgroundDimEnabled">false</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:background">#00000000</item>
+    </style>
+
+    <style name="news_content">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
+    </style>
+
+    <style name="special_text">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/special_text</item>
+    </style>
+
+    <style name="news_title">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Headline</item>
     </style>
 
 </resources>

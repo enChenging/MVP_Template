@@ -2,66 +2,45 @@ package com.release.mvp.ui.home;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.navigation.NavigationView;
 import com.release.mvp.R;
 import com.release.mvp.presenter.home.MainPersenter;
 import com.release.mvp.presenter.home.MainView;
-import com.release.mvp.ui.adapter.HomePagesAdapder;
 import com.release.mvp.ui.base.BaseActivity;
-import com.release.mvp.widget.LazyViewPager;
-import com.release.mvp.widget.NoScrollViewPager;
+import com.release.mvp.utils.StatusBarUtil;
+import com.release.mvp.widget.bottom_navigation.BottomNavigationViewEx;
 
+import androidx.annotation.NonNull;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
 import butterknife.BindView;
-import butterknife.OnClick;
+import cn.jzvd.Jzvd;
 
 /**
  * @author Mr.release
  * @create 2019/3/22
  * @Describe
  */
-public class MainActivity extends BaseActivity implements MainView {
+public class MainActivity extends BaseActivity implements MainView, NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    @BindView(R.id.view_pager)
-    NoScrollViewPager mViewPager;
-    @BindView(R.id.rb_news)
-    RadioButton mRbNews;
-    @BindView(R.id.rb_recommend)
-    RadioButton mRbRecommend;
-    @BindView(R.id.rb_live)
-    RadioButton mRbLive;
-    @BindView(R.id.user_photo_bg)
-    ImageView mUserPhotoBg;
-    @BindView(R.id.headImg)
-    ImageView mHeadImg;
-    @BindView(R.id.tv_user_name)
-    TextView mTvUserName;
-    @BindView(R.id.tv_user_duties)
-    TextView mTvUserDuties;
-    @BindView(R.id.id_draw_menu_header)
-    RelativeLayout mIdDrawMenuHeader;
-    @BindView(R.id.tv_help)
-    TextView mTvHelp;
-    @BindView(R.id.ll_help)
-    LinearLayout mLlHelp;
-    @BindView(R.id.tv_setting)
-    TextView mTvSetting;
-    @BindView(R.id.ll_setting)
-    LinearLayout mLlSetting;
+
+    @BindView(R.id.bottom_navigation)
+    BottomNavigationViewEx mBottomNavigation;
+    @BindView(R.id.left_navigation)
+    NavigationView mLeftNavigation;
     @BindView(R.id.dl_drawer)
     DrawerLayout mDlDrawer;
 
-    public Boolean isExit = false;
     private MainPersenter mPersenter;
 
     public static void start(Context context) {
@@ -77,15 +56,17 @@ public class MainActivity extends BaseActivity implements MainView {
 
     @Override
     public void initView() {
-        mPersenter = new MainPersenter(this);
-        mPersenter.loadHeadView(this, mHeadImg);
-    }
+        View headerView = mLeftNavigation.getHeaderView(0);
+        mLeftNavigation.setItemIconTintList(null);
+        ImageView headImg = headerView.findViewById(R.id.headImg);
 
-    @Override
-    public void initData() {
-        mViewPager.setAdapter(new HomePagesAdapder(getSupportFragmentManager()));
-        mViewPager.setCurrentItem(0);
-        mRbNews.setChecked(true);
+        mPersenter = new MainPersenter(this);
+        mPersenter.loadHeadView(this, headImg);
+
+        mBottomNavigation.enableAnimation(false);
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_nav);
+        NavController navController = navHostFragment.getNavController();
+        NavigationUI.setupWithNavController(mBottomNavigation, navController);
     }
 
     @Override
@@ -96,7 +77,7 @@ public class MainActivity extends BaseActivity implements MainView {
 
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
-                if (drawerView.getTag().equals("left")) {
+                if (drawerView != null && drawerView.getTag().equals("left")) {
                     View content = mDlDrawer.getChildAt(0);
                     int offset = (int) (drawerView.getWidth() * slideOffset);
                     content.setTranslationX(offset);
@@ -116,56 +97,36 @@ public class MainActivity extends BaseActivity implements MainView {
 
             }
         });
-        mViewPager.setOnPageChangeListener(new LazyViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                switch (position) {
-                    case 0:
-                        mDlDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-                        break;
-                    case 1:
-                    case 2:
-                    case 3:
-                        mDlDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-                        break;
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
+        mLeftNavigation.setNavigationItemSelectedListener(this);
     }
 
-    @OnClick({R.id.rb_news, R.id.rb_recommend, R.id.rb_live, R.id.id_draw_menu_header, R.id.ll_help, R.id.ll_setting})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.rb_news:
-                mViewPager.setCurrentItem(0, false);
+    @Override
+    public void updateViews(boolean isRefresh) {
+
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+        switch (menuItem.getItemId()) {
+            case R.id.nav_help_center:
+                Toast.makeText(MainActivity.this, "帮助中心", Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.rb_recommend:
-                mViewPager.setCurrentItem(1, false);
+            case R.id.nav_setting:
+                Toast.makeText(MainActivity.this, "设置", Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.rb_live:
-                mViewPager.setCurrentItem(2, false);
+            case R.id.nav_camera:
+                Toast.makeText(MainActivity.this, "照相机", Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.id_draw_menu_header:
-                Toast.makeText(this, "点击头像", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.ll_help:
-                Toast.makeText(this, "帮助中心", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.ll_setting:
-                Toast.makeText(this, "设置", Toast.LENGTH_SHORT).show();
+            case R.id.nav_gallery:
+                Toast.makeText(MainActivity.this, "相册", Toast.LENGTH_SHORT).show();
                 break;
         }
+        toggle();
+        return false;
     }
+
 
     @Override
     public void toggle() {
@@ -176,9 +137,11 @@ public class MainActivity extends BaseActivity implements MainView {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            mPersenter.exit(this, isExit);
+            mPersenter.exit(this);
             return false;
         }
+
+
         return super.onKeyDown(keyCode, event);
     }
 
@@ -197,4 +160,25 @@ public class MainActivity extends BaseActivity implements MainView {
         mPersenter.onDestroy();
         super.onDestroy();
     }
+
+    @Override
+    protected void setStatusBar() {
+        StatusBarUtil.setColorForDrawerLayout(this, mDlDrawer, getResources().getColor(R.color.colorPrimary), 0);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        if (Jzvd.backPress()) {
+            return;
+        }
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Jzvd.resetAllVideos();
+    }
+
 }

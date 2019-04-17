@@ -21,4 +21,12 @@ public class Constants {
     public static final String LOGIN_FIRST = "loginFirst";
     public static final String CURRENT_TIME = "currentTime";
 
+    public static final int INCREASE_PAGE = 20;
+
+    public static final String NEWS_TYPE_KEY = "NewsTypeKey";
+    public static final String NEWS_ID_KEY = "NewsIdKey";
+    public static final String SPECIAL_KEY = "SpecialKey";
+    public static final String PHOTO_SET_KEY = "PhotoSetKey";
+    public static final String VIDEO_ID_KEY = "VideoIdKey";
+
 }

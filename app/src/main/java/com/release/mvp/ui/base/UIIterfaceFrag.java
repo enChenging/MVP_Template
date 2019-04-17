@@ -15,6 +15,6 @@ interface UIIterfaceFrag {
 
     void initListener();
 
-    void initData();
+    void updateViews(boolean isRefresh);
 
 }

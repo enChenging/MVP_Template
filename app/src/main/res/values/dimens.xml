@@ -10,6 +10,7 @@
     <dimen name="default_toolbar_selected_xtest_size">16sp</dimen>
     <dimen name="default_toolbar_xtest_size">16sp</dimen>
     <dimen name="default_toolbar_Indicator_height">3dp</dimen>
+    <dimen name="default_toolbar_margin_top">0dp</dimen>
 
     <!--common text size-->
     <dimen name="default_tiny_tiny_text_size">9sp</dimen>
@@ -25,4 +26,13 @@
 
     <dimen name="default_general_margin">10dp</dimen>
 
+    <!-- News List -->
+    <dimen name="news_icon_width">100dp</dimen>
+    <dimen name="news_icon_height">75dp</dimen>
+    <dimen name="news_ads_height">180dp</dimen>
+
+    <!-- News Detail-->
+    <dimen name="related_news_height">310dp</dimen>
+    <dimen name="news_detail_toolbar_height">90dp</dimen>
+    <dimen name="pull_critical_distance">70dp</dimen>
 </resources>
