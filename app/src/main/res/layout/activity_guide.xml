@@ -41,7 +41,7 @@
             android:id="@+id/dot_focus"
             android:layout_width="6dp"
             android:layout_height="6dp"
-            android:background="@mipmap/dot_focus" />
+            android:background="@drawable/ic_dots_red" />
 
     </RelativeLayout>
 

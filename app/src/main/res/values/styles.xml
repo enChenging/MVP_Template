@@ -12,7 +12,7 @@
     </style>
 
     <style name="app_launcher" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowBackground">@mipmap/bg_monkey</item>
+        <item name="android:windowBackground">@mipmap/splash</item>
         <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
     </style>
 

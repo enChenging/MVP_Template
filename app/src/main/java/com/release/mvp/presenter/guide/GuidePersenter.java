@@ -28,7 +28,7 @@ public class GuidePersenter {
 
     int[] images = {R.mipmap.guide_1, R.mipmap.guide_2, R.mipmap.guide_3};
 
-    public void imageViews(Context context,LinearLayout mDotGroup){
+    public void imageViews(Context context, LinearLayout mDotGroup) {
         for (int i = 0; i < images.length; i++) {
             ImageView iv = new ImageView(context);
             iv.setBackgroundResource(images[i]);
@@ -40,7 +40,7 @@ public class GuidePersenter {
             if (i != 0) {
                 params.leftMargin = DensityUtil.dip2px(context, 10);
             }
-            view.setBackgroundResource(R.mipmap.dot_normal);
+            view.setBackgroundResource(R.drawable.ic_dots_blue);
             view.setLayoutParams(params);
             mDotGroup.addView(view);
         }
