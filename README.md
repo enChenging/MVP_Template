@@ -45,7 +45,8 @@ MVP_Template
 	：帮助生成一个易于使用的缩放Android ImageView实现
 - [jiaozivideoplayer](https://github.com/lipangit/JiaoZiVideoPlayer)
 	：非常好用的播放器
-
+- [dagger-android,dagger-android-suppor,dagger-android-processo,dagger-compiler](https://github.com/google/dagger)
+	：dagger 注解
  
 声明
 -
