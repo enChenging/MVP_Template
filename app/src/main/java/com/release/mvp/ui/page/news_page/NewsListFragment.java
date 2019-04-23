@@ -15,6 +15,8 @@ import com.release.mvp.utils.LogUtils;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -28,14 +30,14 @@ import static com.release.mvp.ui.base.Constants.NEWS_TYPE_KEY;
  * @create 2019/3/22
  * @Describe
  */
-public class NewsListFragment extends BaseFragment implements NewsListView {
+public class NewsListFragment extends BaseFragment<NewsListPresenter> implements NewsListView {
 
     private static final String TAG = NewsListFragment.class.getSimpleName();
 
     @BindView(R.id.rv_news_list)
     RecyclerView rvNewsList;
-    private NewsListAdapter mAdapter;
-    private NewsListPresenter mPresenter;
+    @Inject
+    NewsListAdapter mAdapter;
 
 
     public static NewsListFragment newInstance(String newsId) {
@@ -54,11 +56,9 @@ public class NewsListFragment extends BaseFragment implements NewsListView {
     @Override
     public void initView(View view) {
         String newsId = getArguments().getString(NEWS_TYPE_KEY);
-        mPresenter = new NewsListPresenter(this, newsId);
+        mPresenter.setNewsId(newsId);
 
-        mAdapter = new NewsListAdapter(null);
         mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
-
         rvNewsList.setHasFixedSize(true);//让RecyclerView避免重新计算大小
         rvNewsList.setLayoutManager(new LinearLayoutManager(getContext()));
         rvNewsList.setAdapter(mAdapter);
@@ -76,30 +76,30 @@ public class NewsListFragment extends BaseFragment implements NewsListView {
     }
 
     @Override
-    public void loadAdData(NewsInfoBean newsBean) {
+    public void loadAdDataView(NewsInfoBean newsBean) {
 
-    }
-
-    @Override
-    public void loadData(List<NewsMultiItem> newsLists) {
-        LogUtils.i(TAG, "loadData: " + newsLists.size());
-        mAdapter.setNewData(newsLists);
-    }
-
-    @Override
-    public void loadMoreData(List<NewsMultiItem> newsLists) {
-        LogUtils.i(TAG, "loadMoreData: " + newsLists.size());
-        mAdapter.loadMoreComplete();
-        mAdapter.addData(newsLists);
-    }
-
-    @Override
-    public void loadNoData() {
-        mAdapter.loadMoreEnd();
     }
 
     @Override
     public void updateViews(boolean isRefresh) {
         mPresenter.loadData(isRefresh);
+    }
+
+    @Override
+    public void loadDataView(List<NewsMultiItem> data) {
+        LogUtils.i(TAG, "loadData: " + data.size());
+        mAdapter.setNewData(data);
+    }
+
+    @Override
+    public void loadMoreDataView(List<NewsMultiItem> data) {
+        LogUtils.i(TAG, "loadMoreData: " + data.size());
+        mAdapter.loadMoreComplete();
+        mAdapter.addData(data);
+    }
+
+    @Override
+    public void loadNoDataView() {
+        mAdapter.loadMoreEnd();
     }
 }

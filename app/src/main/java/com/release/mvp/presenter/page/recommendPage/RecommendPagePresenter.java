@@ -1,25 +1,25 @@
 package com.release.mvp.presenter.page.recommendPage;
 
-import com.release.mvp.bean.RecommendPageBean;
-import com.release.mvp.presenter.BasePresenter;
+import com.release.mvp.presenter.base.BasePresenter;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.inject.Inject;
 
 /**
  * @author Mr.release
  * @create 2019/4/1
  * @Describe
  */
-public class RecommendPagePresenter implements BasePresenter {
+public class RecommendPagePresenter extends BasePresenter<RecommendPageView> {
 
-    private RecommendPageView mView;
-    public List<RecommendPageBean.DataBean> list = new ArrayList<>();
-
-    public RecommendPagePresenter(RecommendPageView view) {
-        this.mView = view;
+    @Inject
+    protected RecommendPagePresenter(RecommendPageView view) {
+        super(view);
     }
 
+    @Override
+    public void loadData() {
+        view.loadDataView(null);
+    }
 
     @Override
     public void loadData(boolean isRefresh) {

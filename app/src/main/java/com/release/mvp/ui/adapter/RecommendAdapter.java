@@ -22,9 +22,8 @@ import butterknife.ButterKnife;
  */
 public class RecommendAdapter extends IBaseAdapter<RecommendPageBean.DataBean> {
 
-    public RecommendAdapter(Context context, List<RecommendPageBean.DataBean> datas) {
-        super(context, datas);
-
+    public RecommendAdapter(Context context) {
+        super(context);
     }
 
     @Override

@@ -35,5 +35,6 @@ public class NewsMultiItem implements MultiItemEntity {
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({ITEM_TYPE_NORMAL, ITEM_TYPE_PHOTO_SET})
-    public @interface NewsItemType {}
+    public @interface NewsItemType {
+    }
 }

@@ -22,10 +22,31 @@ android {
 
         multiDexEnabled true
     }
+
+    signingConfigs {
+        debug {
+            keyAlias 'android'
+            keyPassword 'android'
+            storeFile file('mr_release.jks')
+            storePassword 'android'
+        }
+        release {
+            keyAlias 'android'
+            keyPassword 'android'
+            storeFile file('mr_release.jks')
+            storePassword 'android'
+        }
+    }
     buildTypes {
         release {
+            signingConfig signingConfigs.release
+            buildConfigField "boolean", "LOG_DEBUG", "false"
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            signingConfig signingConfigs.release
+            buildConfigField "boolean", "LOG_DEBUG", "true"
         }
     }
 
@@ -55,4 +76,6 @@ dependencies {
     annotationProcessor rootProject.ext.dependencies["permissions-processor"]
     annotationProcessor rootProject.ext.dependencies["butterKnife-compiler"]
     annotationProcessor rootProject.ext.dependencies["glide-compiler"]
+    annotationProcessor rootProject.ext.dependencies["dagger-android-processor"]
+    annotationProcessor rootProject.ext.dependencies["dagger-compiler"]
 }

@@ -2,6 +2,7 @@ package com.release.mvp.utils;
 
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
@@ -23,11 +24,11 @@ public class RxHelper {
      * @param time
      * @return
      */
-    public static Observable<Long> countdown(int time) {
+    public static Flowable<Long> countdown(int time) {
 
         if (time < 0) time = 0;
         final int countTime = time;
-        return Observable.interval(0, 1, TimeUnit.SECONDS)
+        return Flowable.interval(0, 1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(new Function<Long, Long>() {
                     @Override

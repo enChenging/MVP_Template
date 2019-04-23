@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
 import com.release.mvp.R;
 import com.release.mvp.presenter.home.MainPersenter;
@@ -30,7 +31,8 @@ import cn.jzvd.Jzvd;
  * @create 2019/3/22
  * @Describe
  */
-public class MainActivity extends BaseActivity implements MainView, NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity<MainPersenter> implements MainView,
+        NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -40,8 +42,7 @@ public class MainActivity extends BaseActivity implements MainView, NavigationVi
     NavigationView mLeftNavigation;
     @BindView(R.id.dl_drawer)
     DrawerLayout mDlDrawer;
-
-    private MainPersenter mPersenter;
+    private ImageView mHeadImg;
 
     public static void start(Context context) {
         Intent intent = new Intent();
@@ -58,10 +59,7 @@ public class MainActivity extends BaseActivity implements MainView, NavigationVi
     public void initView() {
         View headerView = mLeftNavigation.getHeaderView(0);
         mLeftNavigation.setItemIconTintList(null);
-        ImageView headImg = headerView.findViewById(R.id.headImg);
-
-        mPersenter = new MainPersenter(this);
-        mPersenter.loadHeadView(this, headImg);
+        mHeadImg = headerView.findViewById(R.id.headImg);
 
         mBottomNavigation.enableAnimation(false);
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_nav);
@@ -103,7 +101,7 @@ public class MainActivity extends BaseActivity implements MainView, NavigationVi
 
     @Override
     public void updateViews(boolean isRefresh) {
-
+        Glide.with(this).load("https://b-ssl.duitang.com/uploads/item/201802/20/20180220170028_JcYMU.jpeg").circleCrop().into(mHeadImg);
     }
 
     @Override
@@ -130,14 +128,14 @@ public class MainActivity extends BaseActivity implements MainView, NavigationVi
 
     @Override
     public void toggle() {
-        mPersenter.toggle(mDlDrawer);
+        mPresenter.toggle(mDlDrawer);
     }
 
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            mPersenter.exit(this);
+            mPresenter.exit(this);
             return false;
         }
 
@@ -153,12 +151,6 @@ public class MainActivity extends BaseActivity implements MainView, NavigationVi
         } else {
             return false;
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        mPersenter.onDestroy();
-        super.onDestroy();
     }
 
     @Override

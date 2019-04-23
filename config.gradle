@@ -5,8 +5,8 @@ ext {
             applicationId    : "com.release.mvp",
             minSdkVersion    : 18,
             targetSdkVersion : 28,
-            versionCode      : 1,
-            versionName      : "1.0.1"
+            versionCode      : 2,
+            versionName      : "1.0.2"
     ]
 
     dependVersion = [
@@ -14,7 +14,7 @@ ext {
     ]
 
     dependencies = [
-            "multidex"                     : 'androidx.multidex:multidex:2.0.0',
+            "multidex"                     : 'androidx.multidex:multidex:2.0.1',
             "v7"                           : "androidx.appcompat:appcompat:${dependVersion.support}",
             "design"                       : "com.google.android.material:material:${dependVersion.support}",
             "cardview"                     : "androidx.cardview:cardview:${dependVersion.support}",
@@ -49,5 +49,11 @@ ext {
             "richtext"                     : "com.zzhoujay.richtext:richtext:3.0.8",
             "photoview"                    : "com.github.chrisbanes.photoview:library:1.2.4",
             "jiaozivideoplayer"            : "cn.jzvd:jiaozivideoplayer:7.0_preview",
+            "dagger-android"               : "com.google.dagger:dagger-android:2.21",
+            "dagger-android-support"       : "com.google.dagger:dagger-android-support:2.21",
+            "dagger-android-processor"     : "com.google.dagger:dagger-android-processor:2.21",
+            "dagger-compiler"              : "com.google.dagger:dagger-compiler:2.21",
+
+
     ]
 }

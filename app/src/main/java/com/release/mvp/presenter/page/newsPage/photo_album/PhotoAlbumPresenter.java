@@ -2,14 +2,16 @@ package com.release.mvp.presenter.page.newsPage.photo_album;
 
 import android.annotation.SuppressLint;
 
-import com.alibaba.fastjson.JSON;
 import com.release.mvp.bean.PhotoSetInfoBean;
 import com.release.mvp.http.RetrofitHelper;
-import com.release.mvp.presenter.BasePresenter;
+import com.release.mvp.presenter.base.BasePresenter;
 import com.release.mvp.utils.LogUtils;
+import com.release.mvp.utils.baserx.CommonSubscriber;
 
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
+import org.reactivestreams.Subscription;
+
+import javax.inject.Inject;
+
 import io.reactivex.functions.Consumer;
 
 /**
@@ -17,52 +19,50 @@ import io.reactivex.functions.Consumer;
  * @create 2019/4/16
  * @Describe
  */
-public class PhotoAlbumPresenter implements BasePresenter {
+public class PhotoAlbumPresenter extends BasePresenter<PhotoAlbumView> {
 
     private static final String TAG = PhotoAlbumPresenter.class.getSimpleName();
-    private final PhotoAlbumView mView;
-    private final String mPhotoSetId;
+    private String mPhotoSetId;
 
-    public PhotoAlbumPresenter(PhotoAlbumView view, String photoSetId) {
-        mView = view;
+    @Inject
+    protected PhotoAlbumPresenter(PhotoAlbumView view) {
+        super(view);
+    }
+
+    public void setPhotoSetId(String photoSetId) {
         mPhotoSetId = photoSetId;
     }
 
     @SuppressLint("CheckResult")
     @Override
-    public void loadData(boolean isRefresh) {
-        LogUtils.i(TAG, "loadData: " + mPhotoSetId);
+    public void loadData() {
+        LogUtils.i(TAG, "loadData---mPhotoSetId: " + mPhotoSetId);
         RetrofitHelper.getPhotoAlbumAPI(mPhotoSetId)
-                .doOnSubscribe(new Consumer<Disposable>() {
+                .doOnSubscribe(new Consumer<Subscription>() {
                     @Override
-                    public void accept(Disposable disposable) throws Exception {
-                        LogUtils.i(TAG, "doOnSubscribe: ");
-                        mView.showLoading();
+                    public void accept(Subscription subscription) throws Exception {
+                        view.showLoading();
                     }
                 })
-                .compose(mView.bindToLife())
-                .subscribe(new Consumer<PhotoSetInfoBean>() {
+                .compose(view.bindToLife())
+                .subscribeWith(new CommonSubscriber<PhotoSetInfoBean>() {
                     @Override
-                    public void accept(PhotoSetInfoBean photoSetInfoBean) throws Exception {
-                        mView.loadPhotoData(photoSetInfoBean);
+                    protected void _onNext(PhotoSetInfoBean photoSetInfoBean) {
+                        LogUtils.i(TAG, "_onNext: " + photoSetInfoBean);
+                        view.loadPhotoDataView(photoSetInfoBean);
                     }
-                }, new Consumer<Throwable>() {
+
                     @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        LogUtils.i(TAG, "throwable: ");
-                        mView.showNetError();
+                    protected void _onError(String message) {
+                        LogUtils.i(TAG, "throwable: " + message);
+                        view.showNetError();
                     }
-                }, new Action() {
+
                     @Override
-                    public void run() throws Exception {
-                        LogUtils.i(TAG, "run: ");
-                        mView.hideLoading();
+                    protected void _onComplete() {
+                        view.hideLoading();
                     }
                 });
     }
 
-    @Override
-    public void loadMoreData() {
-
-    }
 }

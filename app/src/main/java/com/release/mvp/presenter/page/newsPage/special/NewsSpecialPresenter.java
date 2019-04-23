@@ -6,17 +6,19 @@ import com.alibaba.fastjson.JSON;
 import com.release.mvp.bean.NewsItemInfoBean;
 import com.release.mvp.bean.SpecialInfoBean;
 import com.release.mvp.http.RetrofitHelper;
-import com.release.mvp.presenter.BasePresenter;
+import com.release.mvp.presenter.base.BasePresenter;
 import com.release.mvp.ui.adapter.item.SpecialItem;
 import com.release.mvp.utils.LogUtils;
+import com.release.mvp.utils.baserx.CommonSubscriber;
+
+import org.reactivestreams.Publisher;
 
 import java.util.Comparator;
 import java.util.List;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
+import javax.inject.Inject;
+
+import io.reactivex.Flowable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 
@@ -25,68 +27,62 @@ import io.reactivex.functions.Function;
  * @create 2019/4/15
  * @Describe
  */
-public class NewsSpecialPresenter implements BasePresenter {
+public class NewsSpecialPresenter extends BasePresenter<NewsSpecialView> {
 
     private static final String TAG = NewsSpecialPresenter.class.getSimpleName();
-    private final String mSpecialId;
-    private final NewsSpecialView mView;
 
-    public NewsSpecialPresenter(String specialId, NewsSpecialView view) {
-        this.mSpecialId = specialId;
-        this.mView = view;
+    @Inject
+    protected NewsSpecialPresenter(NewsSpecialView view) {
+        super(view);
+    }
+
+    private String specialId;
+
+    public void setSpeicalId(String specialId) {
+        this.specialId = specialId;
     }
 
     @SuppressLint("CheckResult")
     @Override
-    public void loadData(boolean isRefresh) {
-        RetrofitHelper.getNewsSpecialAPI(mSpecialId)
-                .doOnSubscribe(new Consumer<Disposable>() {
+    public void loadData() {
+        RetrofitHelper.getNewsSpecialAPI(specialId)
+                .doOnSubscribe(subscription -> view.hideLoading())
+                .flatMap(new Function<SpecialInfoBean, Publisher<SpecialItem>>() {
                     @Override
-                    public void accept(Disposable disposable) throws Exception {
-                        mView.hideLoading();
-                    }
-                })
-                .flatMap(new Function<SpecialInfoBean, ObservableSource<SpecialItem>>() {
-                    @Override
-                    public ObservableSource<SpecialItem> apply(SpecialInfoBean specialInfoBean) throws Exception {
+                    public Publisher<SpecialItem> apply(SpecialInfoBean specialInfoBean) throws Exception {
                         String s = JSON.toJSONString(specialInfoBean);
                         LogUtils.i(TAG, "SpecialInfoBean: " + s);
-                        mView.loadHead(specialInfoBean);
+                        view.loadHeadView(specialInfoBean);
                         return _convertSpecialBeanToItem(specialInfoBean);
                     }
                 })
                 .toList()
-                .toObservable()
-                .compose(mView.<List<SpecialItem>>bindToLife())
-                .subscribe(new Consumer<List<SpecialItem>>() {
+                .toFlowable()
+                .compose(view.<List<SpecialItem>>bindToLife())
+                .subscribeWith(new CommonSubscriber<List<SpecialItem>>() {
                     @Override
-                    public void accept(List<SpecialItem> specialItems) throws Exception {
-                        mView.loadData(specialItems);
+                    protected void _onNext(List<SpecialItem> specialItems) {
+                        view.loadDataView(specialItems);
                     }
-                }, new Consumer<Throwable>() {
+
                     @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        mView.showNetError();
+                    protected void _onError(String message) {
+                        view.showNetError();
                     }
-                }, new Action() {
+
                     @Override
-                    public void run() throws Exception {
-                        mView.hideLoading();
+                    protected void _onComplete() {
+                        view.hideLoading();
                     }
                 });
     }
 
-    @Override
-    public void loadMoreData() {
-
-    }
-
-    private Observable<SpecialItem> _convertSpecialBeanToItem(SpecialInfoBean specialBean) {
+    private Flowable<SpecialItem> _convertSpecialBeanToItem(SpecialInfoBean specialBean) {
         // 这边 +1 是接口数据还有个 topicsplus 的字段可能是穿插在 topics 字段列表中间。这里没有处理 topicsplus
         final SpecialItem[] specialItems = new SpecialItem[specialBean.getTopics().size() + 1];
 
 
-        return Observable.fromIterable(specialBean.getTopics())
+        return Flowable.fromIterable(specialBean.getTopics())
                 // 获取头部
                 .doOnNext(new Consumer<SpecialInfoBean.TopicsBean>() {
                     @Override
@@ -102,19 +98,19 @@ public class NewsSpecialPresenter implements BasePresenter {
                         return o1.getIndex() - o2.getIndex();
                     }
                 })
-                .toObservable()
+                .toFlowable()
                 // 拆分
-                .flatMap(new Function<List<SpecialInfoBean.TopicsBean>, ObservableSource<SpecialInfoBean.TopicsBean>>() {
+                .flatMap(new Function<List<SpecialInfoBean.TopicsBean>, Publisher<SpecialInfoBean.TopicsBean>>() {
                     @Override
-                    public ObservableSource<SpecialInfoBean.TopicsBean> apply(List<SpecialInfoBean.TopicsBean> topicsEntities) throws Exception {
-                        return Observable.fromIterable(topicsEntities);
+                    public Publisher<SpecialInfoBean.TopicsBean> apply(List<SpecialInfoBean.TopicsBean> topicsEntities) throws Exception {
+                        return Flowable.fromIterable(topicsEntities);
                     }
                 })
-                .flatMap(new Function<SpecialInfoBean.TopicsBean, ObservableSource<SpecialItem>>() {
+                .flatMap(new Function<SpecialInfoBean.TopicsBean, Publisher<SpecialItem>>() {
                     @Override
-                    public ObservableSource<SpecialItem> apply(SpecialInfoBean.TopicsBean topicsEntity) throws Exception {
+                    public Publisher<SpecialItem> apply(SpecialInfoBean.TopicsBean topicsEntity) throws Exception {
                         // 转换并在每个列表项增加头部
-                        return Observable.fromIterable(topicsEntity.getDocs())
+                        return Flowable.fromIterable(topicsEntity.getDocs())
                                 .map(new Function<NewsItemInfoBean, SpecialItem>() {
                                     @Override
                                     public SpecialItem apply(NewsItemInfoBean newsItemInfoBean) throws Exception {
@@ -122,7 +118,6 @@ public class NewsSpecialPresenter implements BasePresenter {
                                     }
                                 })
                                 .startWith(specialItems[topicsEntity.getIndex() - 1]);
-
                     }
                 });
     }

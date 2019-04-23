@@ -1,6 +1,7 @@
 package com.release.mvp.presenter.page.newsPage.page;
 
 import com.release.mvp.dao.NewsTypeInfo;
+import com.release.mvp.presenter.base.BaseView;
 
 import java.util.List;
 
@@ -9,7 +10,7 @@ import java.util.List;
  * @create 2019/4/16
  * @Describe
  */
-public interface NewsPageView {
+public interface NewsPageView extends BaseView {
 
-    void loadData(List<NewsTypeInfo> checkList);
+    void loadDataView(List<NewsTypeInfo> checkList);
 }

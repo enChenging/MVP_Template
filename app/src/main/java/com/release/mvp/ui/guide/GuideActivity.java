@@ -23,7 +23,7 @@ import butterknife.BindView;
  * @create 2019/3/22
  * @Describe
  */
-public class GuideActivity extends BaseActivity implements GuideView {
+public class GuideActivity extends BaseActivity<GuidePersenter> implements GuideView {
 
     @BindView(R.id.view_viewpager)
     ViewPager mViewViewpager;
@@ -34,9 +34,7 @@ public class GuideActivity extends BaseActivity implements GuideView {
     @BindView(R.id.dot_focus)
     View mDotFocus;
 
-
     private int dot_width;
-    private GuidePersenter mPersenter;
 
     public static void start(Context context) {
         Intent intent = new Intent();
@@ -52,7 +50,6 @@ public class GuideActivity extends BaseActivity implements GuideView {
 
     @Override
     public void initView() {
-        mPersenter = new GuidePersenter(this);
     }
 
     @Override
@@ -68,7 +65,7 @@ public class GuideActivity extends BaseActivity implements GuideView {
 
             @Override
             public void onPageSelected(int position) {
-                if (position == mPersenter.imageList.size() - 1) {
+                if (position == mPresenter.imageList.size() - 1) {
                     mBtHome.setVisibility(View.VISIBLE);
                 } else {
                     mBtHome.setVisibility(View.GONE);
@@ -86,8 +83,8 @@ public class GuideActivity extends BaseActivity implements GuideView {
 
     @Override
     public void updateViews(boolean isRefresh) {
-        mPersenter.imageViews(this, mDotGroup);
-        mViewViewpager.setAdapter(new GuideViewPagerAdapter(mPersenter.imageList));
+        mPresenter.imageViews(this, mDotGroup);
+        mViewViewpager.setAdapter(new GuideViewPagerAdapter(mPresenter.imageList));
         //效果
 //        viewpager.setPageTransformer(true, new ZoomOutPageTransformer());
 //        viewpager.setPageTransformer(true, new DepthPageTransformer());
@@ -99,17 +96,16 @@ public class GuideActivity extends BaseActivity implements GuideView {
     @Override
     public void goHome() {
         MainActivity.start(this);
-        finish();
-    }
-
-    @Override
-    protected void onDestroy() {
-        mPersenter.onDestroy();
-        super.onDestroy();
     }
 
     @Override
     protected void setStatusBar() {
         StatusBarUtil.setTransparentForImageViewInFragment(this, null);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        finish();
     }
 }

@@ -34,11 +34,14 @@ public class PhotoSetAdapter extends PagerAdapter {
     private OnTapListener mTapListener;
 
 
-    public PhotoSetAdapter(Context context, List<String> imgList) {
+    public PhotoSetAdapter(Context context) {
         this.mContext = context;
-        this.mImgList = imgList;
+
     }
 
+    public void setData(List<String> imgList) {
+        this.mImgList = imgList;
+    }
 
     @Override
     public int getCount() {

@@ -9,13 +9,14 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.Settings;
-import androidx.core.content.FileProvider;
 import android.text.TextUtils;
 
+import com.release.mvp.App;
 import com.release.mvp.R;
-import com.release.mvp.ui.base.BaseApplication;
 
 import java.io.File;
+
+import androidx.core.content.FileProvider;
 
 public class InstallUtil {
 
@@ -105,7 +106,7 @@ public class InstallUtil {
      * 安装apk文件
      */
     public static void installApk(String filepath) {
-        BaseApplication.mContext.startActivity(getInstallApkIntent(filepath));
+        App.mContext.startActivity(getInstallApkIntent(filepath));
     }
 
     /**
@@ -121,14 +122,14 @@ public class InstallUtil {
 
     public static void install(Context context) {
         String path = Environment.getExternalStorageDirectory() + File.separator +
-                BaseApplication.mContext.getPackageName() + File.separator + "apk" + File.separator;
+                App.mContext.getPackageName() + File.separator + "apk" + File.separator;
         File file = new File(path, context.getResources().getString(R.string.app_name) + ".apk");
         Intent intent = new Intent(Intent.ACTION_VIEW);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
-            Uri apkUri = FileProvider.getUriForFile(context, BaseApplication.mContext.getPackageName() + ".fileprovider", file);
+            Uri apkUri = FileProvider.getUriForFile(context, App.mContext.getPackageName() + ".fileprovider", file);
             intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
         } else {
             intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");

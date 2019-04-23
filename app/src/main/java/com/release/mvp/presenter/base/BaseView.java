@@ -1,4 +1,4 @@
-package com.release.mvp.presenter;
+package com.release.mvp.presenter.base;
 
 import com.trello.rxlifecycle3.LifecycleTransformer;
 

@@ -5,12 +5,15 @@ import android.annotation.SuppressLint;
 import com.alibaba.fastjson.JSON;
 import com.release.mvp.bean.NewsDetailInfoBean;
 import com.release.mvp.http.RetrofitHelper;
-import com.release.mvp.presenter.BasePresenter;
+import com.release.mvp.presenter.base.BasePresenter;
 import com.release.mvp.utils.ListUtils;
 import com.release.mvp.utils.LogUtils;
+import com.release.mvp.utils.baserx.CommonSubscriber;
 
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
+import org.reactivestreams.Subscription;
+
+import javax.inject.Inject;
+
 import io.reactivex.functions.Consumer;
 
 /**
@@ -18,18 +21,16 @@ import io.reactivex.functions.Consumer;
  * @create 2019/4/15
  * @Describe
  */
-public class NewsDetailPresenter implements BasePresenter {
+public class NewsDetailPresenter extends BasePresenter<NewsDetailView> {
 
     private static final String TAG = NewsDetailPresenter.class.getSimpleName();
-    private String mNewsId;
-    private final NewsDetailView mView;
     private static final String HTML_IMG_TEMPLATE = "<img src=\"http\" />";
+    private String mNewsId;
 
-    public NewsDetailPresenter(String newsId, NewsDetailView view) {
-        this.mNewsId = newsId;
-        this.mView = view;
+    @Inject
+    protected NewsDetailPresenter(NewsDetailView view) {
+        super(view);
     }
-
 
     public void setNewsId(String newsId) {
         mNewsId = newsId;
@@ -37,45 +38,40 @@ public class NewsDetailPresenter implements BasePresenter {
 
     @SuppressLint("CheckResult")
     @Override
-    public void loadData(boolean isRefresh) {
+    public void loadData() {
 
         RetrofitHelper.getNewsDetailAPI(mNewsId)
-                .doOnSubscribe(new Consumer<Disposable>() {
+                .doOnSubscribe(new Consumer<Subscription>() {
                     @Override
-                    public void accept(Disposable disposable) throws Exception {
-                        mView.showLoading();
+                    public void accept(Subscription subscription) throws Exception {
+                        view.showLoading();
                     }
                 })
                 .doOnNext(new Consumer<NewsDetailInfoBean>() {
                     @Override
                     public void accept(NewsDetailInfoBean newsDetailInfoBean) throws Exception {
                         String s = JSON.toJSONString(newsDetailInfoBean);
-                        LogUtils.i(TAG, "accept: "+s);
+                        LogUtils.i(TAG, "accept: " + s);
                         _handleRichTextWithImg(newsDetailInfoBean);
                     }
                 })
-                .compose(mView.<NewsDetailInfoBean>bindToLife())
-                .subscribe(new Consumer<NewsDetailInfoBean>() {
+                .compose(view.<NewsDetailInfoBean>bindToLife())
+                .subscribeWith(new CommonSubscriber<NewsDetailInfoBean>() {
                     @Override
-                    public void accept(NewsDetailInfoBean newsDetailInfoBean) throws Exception {
-                        mView.loadData(newsDetailInfoBean);
+                    protected void _onNext(NewsDetailInfoBean newsDetailInfoBean) {
+                        view.loadDataView(newsDetailInfoBean);
                     }
-                }, new Consumer<Throwable>() {
+
                     @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        mView.showNetError();
+                    protected void _onError(String message) {
+                        view.showNetError();
                     }
-                }, new Action() {
+
                     @Override
-                    public void run() throws Exception {
-                        mView.hideLoading();
+                    protected void _onComplete() {
+                        view.hideLoading();
                     }
                 });
-    }
-
-    @Override
-    public void loadMoreData() {
-
     }
 
     /**

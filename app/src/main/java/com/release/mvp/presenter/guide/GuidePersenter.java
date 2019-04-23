@@ -6,27 +6,29 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.release.mvp.R;
+import com.release.mvp.presenter.base.BasePresenter;
 import com.release.mvp.utils.DensityUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 /**
  * @author Mr.release
  * @create 2019/3/28
  * @Describe
  */
-public class GuidePersenter {
+public class GuidePersenter extends BasePresenter<GuideView> {
 
 
-    private GuideView mView;
     public List<ImageView> imageList = new ArrayList<>();
-
-    public GuidePersenter(GuideView view) {
-        this.mView = view;
-    }
-
     int[] images = {R.mipmap.guide_1, R.mipmap.guide_2, R.mipmap.guide_3};
+
+    @Inject
+    protected GuidePersenter(GuideView view) {
+        super(view);
+    }
 
     public void imageViews(Context context, LinearLayout mDotGroup) {
         for (int i = 0; i < images.length; i++) {
@@ -44,9 +46,5 @@ public class GuidePersenter {
             view.setLayoutParams(params);
             mDotGroup.addView(view);
         }
-    }
-
-    public void onDestroy() {
-        mView = null;
     }
 }

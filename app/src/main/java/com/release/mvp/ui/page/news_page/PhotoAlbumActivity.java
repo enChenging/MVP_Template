@@ -3,7 +3,6 @@ package com.release.mvp.ui.page.news_page;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -20,10 +19,11 @@ import com.release.mvp.widget.PhotoViewPager;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import static com.release.mvp.ui.base.Constants.PHOTO_SET_KEY;
 
@@ -32,7 +32,7 @@ import static com.release.mvp.ui.base.Constants.PHOTO_SET_KEY;
  * @create 2019/4/16
  * @Describe
  */
-public class PhotoAlbumActivity extends BaseActivity implements PhotoAlbumView {
+public class PhotoAlbumActivity extends BaseActivity<PhotoAlbumPresenter> implements PhotoAlbumView {
 
 
     @BindView(R.id.vp_photo)
@@ -58,9 +58,8 @@ public class PhotoAlbumActivity extends BaseActivity implements PhotoAlbumView {
     @BindView(R.id.ll_bottom_content)
     LinearLayout mLlBottomContent;
 
-    private PhotoAlbumPresenter mPresenter;
-    private String mPhotoSetId;
-    private PhotoSetAdapter mAdapter;
+    @Inject
+    PhotoSetAdapter mAdapter;
     private boolean mIsHideToolbar = false;
     private List<PhotoSetInfoBean.PhotosBean> mPhotos;
 
@@ -79,10 +78,8 @@ public class PhotoAlbumActivity extends BaseActivity implements PhotoAlbumView {
     @Override
     public void initView() {
 
-        mPhotoSetId = getIntent().getStringExtra(PHOTO_SET_KEY);
-
-        mPresenter = new PhotoAlbumPresenter(this, mPhotoSetId);
-
+        String photoSetId = getIntent().getStringExtra(PHOTO_SET_KEY);
+        mPresenter.setPhotoSetId(photoSetId);
     }
 
     @Override
@@ -92,18 +89,19 @@ public class PhotoAlbumActivity extends BaseActivity implements PhotoAlbumView {
 
     @Override
     public void updateViews(boolean isRefresh) {
-        mPresenter.loadData(isRefresh);
+        mPresenter.loadData();
     }
 
     @Override
-    public void loadPhotoData(PhotoSetInfoBean photoSetBean) {
+    public void loadPhotoDataView(PhotoSetInfoBean photoSetBean) {
+
         List<String> imgUrls = new ArrayList<>();
         mPhotos = photoSetBean.getPhotos();
         for (PhotoSetInfoBean.PhotosBean photo : mPhotos) {
             imgUrls.add(photo.getImgurl());
         }
 
-        mAdapter = new PhotoSetAdapter(this, imgUrls);
+        mAdapter.setData(imgUrls);
         mVpPhoto.setAdapter(mAdapter);
         mVpPhoto.setOffscreenPageLimit(imgUrls.size());
 

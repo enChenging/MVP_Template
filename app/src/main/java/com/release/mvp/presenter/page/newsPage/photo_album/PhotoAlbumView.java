@@ -1,7 +1,8 @@
 package com.release.mvp.presenter.page.newsPage.photo_album;
 
 import com.release.mvp.bean.PhotoSetInfoBean;
-import com.release.mvp.presenter.BaseView;
+import com.release.mvp.presenter.base.BaseView;
+import com.release.mvp.utils.response.BaseResponse;
 
 /**
  * @author Mr.release
@@ -10,5 +11,5 @@ import com.release.mvp.presenter.BaseView;
  */
 public interface PhotoAlbumView extends BaseView {
 
-    void loadPhotoData(PhotoSetInfoBean photoSetBean);
+    void loadPhotoDataView(PhotoSetInfoBean photoSetBean);
 }

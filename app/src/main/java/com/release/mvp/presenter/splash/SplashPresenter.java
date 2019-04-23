@@ -1,19 +1,22 @@
 package com.release.mvp.presenter.splash;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.widget.Button;
 
+import com.release.mvp.presenter.base.BasePresenter;
 import com.release.mvp.ui.base.Constants;
 import com.release.mvp.ui.splash.SplashActivity;
 import com.release.mvp.utils.AppManager;
+import com.release.mvp.utils.LogUtils;
 import com.release.mvp.utils.RxHelper;
 import com.release.mvp.utils.SPUtil;
+import com.release.mvp.utils.baserx.CommonSubscriber;
+import com.release.mvp.utils.baserx.RxUtil;
 import com.release.mvp.widget.dialog.NoticeDialog;
 
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+import javax.inject.Inject;
+
 import permissions.dispatcher.PermissionRequest;
 
 /**
@@ -21,14 +24,15 @@ import permissions.dispatcher.PermissionRequest;
  * @create 2019/3/27
  * @Describe
  */
-public class SplashPresenter {
+public class SplashPresenter extends BasePresenter<SplashView> {
 
-    private SplashView view;
+    private static final String TAG = SplashPresenter.class.getSimpleName();
     private NoticeInteractor noticeInteractor;
 
-    public SplashPresenter(SplashView view,NoticeInteractor noticeInteractor) {
-        this.view = view;
-        this.noticeInteractor = noticeInteractor;
+    @Inject
+    protected SplashPresenter(SplashView view) {
+        super(view);
+        noticeInteractor = new NoticeInteractor();
     }
 
     public void jump() {
@@ -41,33 +45,27 @@ public class SplashPresenter {
         }
     }
 
+    @SuppressLint("CheckResult")
     public void countdown(SplashActivity activity, int time, Button mBtnJump, boolean isBack, boolean isVisiable) {
         RxHelper.countdown(time)
                 .compose(activity.<Long>bindToLifecycle())
-                .subscribeOn(Schedulers.io())
+                .compose(RxUtil.<Long>rxSchedulerHelper())
                 .doOnSubscribe((disposable) -> mBtnJump.setText("跳过(6)"))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Long>() {
+                .subscribeWith(new CommonSubscriber<Long>() {
                     @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(Long aLong) {
+                    protected void _onNext(Long aLong) {
                         mBtnJump.setText("跳过(" + aLong + ")");
                     }
 
                     @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
+                    protected void _onError(String message) {
+                        LogUtils.e(TAG, "_onError: " + message);
                     }
 
                     @Override
-                    public void onComplete() {
-                        if (!isBack && isVisiable) {
+                    protected void _onComplete() {
+                        if (!isBack && isVisiable)
                             view.goHome();
-                        }
                     }
                 });
     }
@@ -77,11 +75,7 @@ public class SplashPresenter {
     }
 
 
-    public void showNotice(SplashActivity context,String content,PermissionRequest mRequest,boolean isNever){
+    public void showNotice(SplashActivity context, String content, PermissionRequest mRequest, boolean isNever) {
         NoticeDialog.show(context, content, (v -> noticeInteractor.noticeListener(context, v, mRequest, isNever)));
-    }
-
-    public void onDestroy() {
-        view = null;
     }
 }

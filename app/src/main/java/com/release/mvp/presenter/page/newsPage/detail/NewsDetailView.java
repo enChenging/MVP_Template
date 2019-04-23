@@ -1,7 +1,7 @@
 package com.release.mvp.presenter.page.newsPage.detail;
 
 import com.release.mvp.bean.NewsDetailInfoBean;
-import com.release.mvp.presenter.BaseView;
+import com.release.mvp.presenter.base.BaseView;
 
 /**
  * @author Mr.release
@@ -10,5 +10,5 @@ import com.release.mvp.presenter.BaseView;
  */
 public interface NewsDetailView extends BaseView {
 
-    void loadData(NewsDetailInfoBean newsDetailInfoBean);
+    void loadDataView(NewsDetailInfoBean newsDetailInfoBean);
 }

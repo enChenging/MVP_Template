@@ -41,7 +41,7 @@ import static com.release.mvp.ui.base.Constants.NEWS_ID_KEY;
  * @create 2019/4/15
  * @Describe
  */
-public class NewsDetailActivity extends BaseActivity implements NewsDetailView {
+public class NewsDetailActivity extends BaseActivity<NewsDetailPresenter> implements NewsDetailView {
 
 
     @BindView(R.id.tv_title)
@@ -86,8 +86,6 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailView {
     private int mMinScrollSlop;
     private Animator mTopBarAnimator;
     private int mLastScrollY = 0;
-    private NewsDetailPresenter mPresenter;
-    private String mNewsId;
     private String mNextNewsId;
 
 
@@ -114,8 +112,8 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailView {
     @Override
     public void initView() {
         mToolBar.setBackgroundColor(getResources().getColor(R.color.white));
-        mNewsId = getIntent().getStringExtra(NEWS_ID_KEY);
-        mPresenter = new NewsDetailPresenter(mNewsId, this);
+        String newsId = getIntent().getStringExtra(NEWS_ID_KEY);
+        mPresenter.setNewsId(newsId);
 
         RichText.initCacheDir(this);
         RichText.debugMode = false;
@@ -182,11 +180,11 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailView {
 
     @Override
     public void updateViews(boolean isRefresh) {
-        mPresenter.loadData(isRefresh);
+        mPresenter.loadData();
     }
 
     @Override
-    public void loadData(NewsDetailInfoBean newsDetailInfoBean) {
+    public void loadDataView(NewsDetailInfoBean newsDetailInfoBean) {
         mTvTitleContent.setText(newsDetailInfoBean.getTitle());
         mTvSource.setText(newsDetailInfoBean.getSource());
         mTvTime.setText(newsDetailInfoBean.getPtime());

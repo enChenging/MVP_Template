@@ -9,13 +9,15 @@ import android.widget.Toast;
 import com.flyco.tablayout.SlidingTabLayout;
 import com.release.mvp.R;
 import com.release.mvp.dao.NewsTypeInfo;
-import com.release.mvp.presenter.page.newsPage.page.NewsPagePresenter;
+import com.release.mvp.presenter.page.newsPage.page.NewsPagePresenterImpl;
 import com.release.mvp.presenter.page.newsPage.page.NewsPageView;
 import com.release.mvp.ui.base.BaseFragment;
 import com.release.mvp.ui.base.ViewPagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
@@ -27,7 +29,7 @@ import butterknife.OnClick;
  * @create 2019/3/22
  * @Describe
  */
-public class NewsPage extends BaseFragment implements NewsPageView {
+public class NewsPage extends BaseFragment<NewsPagePresenterImpl> implements NewsPageView {
 
     @BindView(R.id.view_pager)
     ViewPager mViewPager;
@@ -41,10 +43,9 @@ public class NewsPage extends BaseFragment implements NewsPageView {
     RelativeLayout mRlTop;
     @BindView(R.id.stl_tab_layout)
     SlidingTabLayout mStlTabLayout;
+    @Inject
+    ViewPagerAdapter mAdapter;
 
-    private String[] titles = {"要闻", "美食", "财经", "娱乐", "科技"};
-    private NewsPagePresenter mPresenter;
-    private ViewPagerAdapter mAdapter;
 
     @Override
     public int getLayoutId() {
@@ -53,9 +54,6 @@ public class NewsPage extends BaseFragment implements NewsPageView {
 
     @Override
     public void initView(View view) {
-
-        mPresenter = new NewsPagePresenter(this);
-        mAdapter = new ViewPagerAdapter(mActivity.getSupportFragmentManager());
     }
 
     @Override
@@ -77,11 +75,12 @@ public class NewsPage extends BaseFragment implements NewsPageView {
 
     @Override
     public void updateViews(boolean isRefresh) {
-        mPresenter.loadData(isRefresh);
+        mPresenter.loadData();
     }
 
+
     @Override
-    public void loadData(List<NewsTypeInfo> list) {
+    public void loadDataView(List<NewsTypeInfo> list) {
 
         List<Fragment> fragments = new ArrayList<>();
         List<String> titles = new ArrayList<>();

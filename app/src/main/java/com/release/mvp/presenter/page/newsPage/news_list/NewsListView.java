@@ -1,7 +1,7 @@
 package com.release.mvp.presenter.page.newsPage.news_list;
 
 import com.release.mvp.bean.NewsInfoBean;
-import com.release.mvp.presenter.LoadDataView;
+import com.release.mvp.presenter.base.LoadDataView;
 import com.release.mvp.ui.adapter.item.NewsMultiItem;
 
 import java.util.List;
@@ -13,5 +13,5 @@ import java.util.List;
  */
 public interface NewsListView extends LoadDataView<List<NewsMultiItem>> {
 
-    void loadAdData(NewsInfoBean newsBean);
+    void loadAdDataView(NewsInfoBean newsBean);
 }

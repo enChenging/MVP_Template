@@ -6,11 +6,12 @@ import com.release.mvp.bean.NewsInfoBean;
 import com.release.mvp.bean.PhotoSetInfoBean;
 import com.release.mvp.bean.SpecialInfoBean;
 import com.release.mvp.dao.VideoInfo;
+import com.release.mvp.utils.response.BaseResponse;
 
 import java.util.List;
 import java.util.Map;
 
-import io.reactivex.Observable;
+import io.reactivex.Flowable;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Path;
@@ -36,9 +37,9 @@ public interface NewsService {
      */
     @Headers(CACHE_CONTROL_NETWORK)
     @GET("nc/article/{type}/{id}/{startPage}-20.html")
-    Observable<Map<String, List<NewsInfoBean>>> getImportantNews(@Path("type") String type,
-                                                                 @Path("id") String id,
-                                                                 @Path("startPage") int startPage);
+    Flowable<Map<String, List<NewsInfoBean>>> getImportantNews(@Path("type") String type,
+                                                               @Path("id") String id,
+                                                               @Path("startPage") int startPage);
 
     /**
      * 新闻详情
@@ -48,7 +49,7 @@ public interface NewsService {
      */
     @Headers(AVOID_HTTP403_FORBIDDEN)
     @GET("nc/article/{newsId}/full.html")
-    Observable<Map<String, NewsDetailInfoBean>> getNewsDetail(@Path("newsId") String newsId);
+    Flowable<Map<String, NewsDetailInfoBean>> getNewsDetail(@Path("newsId") String newsId);
 
     /**
      * 获取专题
@@ -58,7 +59,7 @@ public interface NewsService {
      */
     @Headers(CACHE_CONTROL_NETWORK)
     @GET("nc/special/{specialId}.html")
-    Observable<Map<String, SpecialInfoBean>> getSpecial(@Path("specialId") String specialIde);
+    Flowable<Map<String, SpecialInfoBean>> getSpecial(@Path("specialId") String specialIde);
 
 
     /**
@@ -69,7 +70,7 @@ public interface NewsService {
      */
     @Headers(CACHE_CONTROL_NETWORK)
     @GET("photo/api/set/{photoId}.json")
-    Observable<PhotoSetInfoBean> getPhotoAlbum(@Path("photoId") String photoId);
+    Flowable<PhotoSetInfoBean> getPhotoAlbum(@Path("photoId") String photoId);
 
     /**
      * 获取视频
@@ -80,6 +81,6 @@ public interface NewsService {
      */
     @Headers(AVOID_HTTP403_FORBIDDEN)
     @GET("nc/video/list/{id}/n/{startPage}-10.html")
-    Observable<Map<String, List<VideoInfo>>> getVideoList(@Path("id") String id,
-                                                          @Path("startPage") int startPage);
+    Flowable<Map<String, List<VideoInfo>>> getVideoList(@Path("id") String id,
+                                                        @Path("startPage") int startPage);
 }

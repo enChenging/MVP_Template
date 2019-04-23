@@ -2,28 +2,36 @@ package com.release.mvp.ui.base;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.release.mvp.R;
-import com.release.mvp.presenter.BaseView;
+import com.release.mvp.presenter.base.BaseView;
+import com.release.mvp.presenter.base.Presenter;
 import com.release.mvp.utils.StatusBarUtil;
 import com.release.mvp.utils.SwipeRefreshHelper;
 import com.release.mvp.widget.EmptyLayout;
 import com.trello.rxlifecycle3.LifecycleTransformer;
 import com.trello.rxlifecycle3.components.support.RxAppCompatActivity;
 
+import javax.inject.Inject;
+
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dagger.android.AndroidInjection;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.support.HasSupportFragmentInjector;
 
 /**
  * @author Mr.release
  * @create 2019/3/22
  * @Describe
  */
-public abstract class BaseActivity extends RxAppCompatActivity implements UIIterfaceAct, BaseView, EmptyLayout.OnRetryListener {
+public abstract class BaseActivity<T extends Presenter> extends RxAppCompatActivity implements HasSupportFragmentInjector,
+        UIIterfaceAct, BaseView, EmptyLayout.OnRetryListener {
 
     protected static String TAG;
 
@@ -37,8 +45,21 @@ public abstract class BaseActivity extends RxAppCompatActivity implements UIIter
     @BindView(R.id.back)
     ImageView mBack;
 
+    @Inject
+    DispatchingAndroidInjector<Fragment> fragmentInjector;
+
+    @Inject
+    protected T mPresenter;
+
+
+    @Override
+    public AndroidInjector<Fragment> supportFragmentInjector() {
+        return fragmentInjector;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -71,7 +92,7 @@ public abstract class BaseActivity extends RxAppCompatActivity implements UIIter
 
     protected void initCommonView() {
         if (mBack != null) {
-            mBack.setOnClickListener((v ->finish()));
+            mBack.setOnClickListener((v -> finish()));
         }
     }
 

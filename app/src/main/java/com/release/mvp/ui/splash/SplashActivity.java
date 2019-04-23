@@ -2,12 +2,10 @@ package com.release.mvp.ui.splash;
 
 import android.Manifest;
 import android.os.Build;
-import androidx.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
 
 import com.release.mvp.R;
-import com.release.mvp.presenter.splash.NoticeInteractor;
 import com.release.mvp.presenter.splash.SplashPresenter;
 import com.release.mvp.presenter.splash.SplashView;
 import com.release.mvp.ui.base.BaseActivity;
@@ -15,6 +13,7 @@ import com.release.mvp.ui.guide.GuideActivity;
 import com.release.mvp.ui.home.MainActivity;
 import com.release.mvp.utils.StatusBarUtil;
 
+import androidx.annotation.NonNull;
 import butterknife.BindView;
 import butterknife.OnClick;
 import permissions.dispatcher.NeedsPermission;
@@ -31,13 +30,12 @@ import permissions.dispatcher.RuntimePermissions;
  * @Describe
  */
 @RuntimePermissions
-public class SplashActivity extends BaseActivity implements SplashView {
+public class SplashActivity extends BaseActivity<SplashPresenter> implements SplashView {
 
     @BindView(R.id.btn_jump)
     Button mBtnJump;
     @BindView(R.id.btn_permission)
     Button mBtnPermission;
-    private SplashPresenter mPresenter;
 
     @Override
     public int getLayoutId() {
@@ -47,7 +45,6 @@ public class SplashActivity extends BaseActivity implements SplashView {
 
     @Override
     public void initView() {
-        mPresenter = new SplashPresenter(this, new NoticeInteractor());
     }
 
     @Override
@@ -63,13 +60,11 @@ public class SplashActivity extends BaseActivity implements SplashView {
     @Override
     public void goGuide() {
         GuideActivity.start(this);
-        finish();
     }
 
     @Override
     public void goHome() {
         MainActivity.start(this);
-        finish();
     }
 
     @OnClick({R.id.btn_jump, R.id.btn_permission})
@@ -104,9 +99,9 @@ public class SplashActivity extends BaseActivity implements SplashView {
     }
 
     @Override
-    protected void onDestroy() {
-        mPresenter.onDestroy();
-        super.onDestroy();
+    protected void onStop() {
+        super.onStop();
+        finish();
     }
 
     private boolean isBack;

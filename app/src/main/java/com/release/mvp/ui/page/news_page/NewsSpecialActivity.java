@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,13 +30,14 @@ import com.release.mvp.utils.ImageLoader;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -53,9 +53,9 @@ import static com.release.mvp.ui.base.Constants.SPECIAL_KEY;
  * @create 2019/4/15
  * @Describe
  */
-public class NewsSpecialActivity extends BaseActivity implements NewsSpecialView {
+public class NewsSpecialActivity extends BaseActivity<NewsSpecialPresenter> implements NewsSpecialView {
 
-
+    private static final String TAG = NewsSpecialActivity.class.getSimpleName();
     @BindView(R.id.tv_title)
     TextView mTvTitle;
     @BindView(R.id.tv_right)
@@ -68,10 +68,10 @@ public class NewsSpecialActivity extends BaseActivity implements NewsSpecialView
     FloatingActionButton mFabCoping;
     @BindView(R.id.ll_tool_bar)
     LinearLayout mLlToolBar;
+    @Inject
+    NewsSpecialAdapter mAdapter;
 
-    private String mSpecialId;
-    private NewsSpecialPresenter mPresenter;
-    private NewsSpecialAdapter mAdapter;
+
     private final int[] mSkipId = new int[20];
     private TagLayout mTagLayout;
     private LinearLayoutManager mLinearLayoutManager;
@@ -94,12 +94,10 @@ public class NewsSpecialActivity extends BaseActivity implements NewsSpecialView
     @Override
     public void initView() {
         mToolBar.setBackgroundColor(getResources().getColor(R.color.white));
-        mSpecialId = getIntent().getStringExtra(SPECIAL_KEY);
-        mPresenter = new NewsSpecialPresenter(mSpecialId, this);
+        String specialId = getIntent().getStringExtra(SPECIAL_KEY);
+        mPresenter.setSpeicalId(specialId);
 
-        mAdapter = new NewsSpecialAdapter(R.layout.adapter_news_list, R.layout.adapter_special_head, null);
         mAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
-
         mRvNewsList.setHasFixedSize(true);
         mLinearLayoutManager = new LinearLayoutManager(this);
         mRvNewsList.setLayoutManager(mLinearLayoutManager);
@@ -142,17 +140,17 @@ public class NewsSpecialActivity extends BaseActivity implements NewsSpecialView
 
     @Override
     public void updateViews(boolean isRefresh) {
-        mPresenter.loadData(isRefresh);
+        mPresenter.loadData();
     }
 
     @Override
-    public void loadData(List<SpecialItem> specialItems) {
+    public void loadDataView(List<SpecialItem> specialItems) {
         mAdapter.setNewData(specialItems);
         _handleTagLayout(specialItems);
     }
 
     @Override
-    public void loadHead(SpecialInfoBean specialBean) {
+    public void loadHeadView(SpecialInfoBean specialBean) {
         View headView = LayoutInflater.from(this).inflate(R.layout.head_special, null);
         ImageView mIvBanner = (ImageView) headView.findViewById(R.id.iv_banner);
         ImageView back2 = headView.findViewById(R.id.back2);

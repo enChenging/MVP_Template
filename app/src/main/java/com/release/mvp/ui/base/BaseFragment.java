@@ -1,5 +1,8 @@
 package com.release.mvp.ui.base;
 
+import android.app.Activity;
+import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,25 +10,38 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.release.mvp.R;
-import com.release.mvp.presenter.BaseView;
+import com.release.mvp.injector.base.ChildFragmentManager;
+import com.release.mvp.presenter.base.BaseView;
+import com.release.mvp.presenter.base.Presenter;
 import com.release.mvp.ui.home.MainActivity;
 import com.release.mvp.utils.SwipeRefreshHelper;
 import com.release.mvp.widget.EmptyLayout;
 import com.trello.rxlifecycle3.LifecycleTransformer;
 import com.trello.rxlifecycle3.components.support.RxFragment;
 
+import javax.inject.Inject;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.support.AndroidSupportInjection;
+import dagger.android.support.HasSupportFragmentInjector;
 
 /**
  * @author Mr.release
  * @create 2019/3/22
  * @Describe
  */
-public abstract class BaseFragment extends RxFragment implements UIIterfaceFrag, BaseView, EmptyLayout.OnRetryListener {
+public abstract class BaseFragment<T extends Presenter> extends RxFragment implements HasSupportFragmentInjector,
+        UIIterfaceFrag, BaseView, EmptyLayout.OnRetryListener {
+
     public MainActivity mActivity;
     private Unbinder mUnbinder;
 
@@ -41,6 +57,46 @@ public abstract class BaseFragment extends RxFragment implements UIIterfaceFrag,
 
     private View mRootView;
     private boolean mIsMulti = false;
+
+
+    @Inject
+    protected Context mContext;
+
+    @Inject
+    @ChildFragmentManager
+    protected FragmentManager childFragmentManager;
+
+    @Inject
+    DispatchingAndroidInjector<Fragment> childFragmentInjector;
+
+    @Inject
+    protected T mPresenter;
+
+
+    @Override
+    public AndroidInjector<Fragment> supportFragmentInjector() {
+        return childFragmentInjector;
+    }
+
+
+    @Override
+    public void onAttach(Activity activity) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            // Perform injection here for versions before M as onAttach(*Context*) did not yet exist
+            // This fixes DaggerFragment issue: https://github.com/google/dagger/issues/777
+            AndroidSupportInjection.inject(this);
+        }
+        super.onAttach(activity);
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            // Perform injection here for M (API 23) due to deprecation of onAttach(*Activity*).
+            AndroidSupportInjection.inject(this);
+        }
+        super.onAttach(context);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,6 +118,7 @@ public abstract class BaseFragment extends RxFragment implements UIIterfaceFrag,
             initCommonView();
             initSwipeRefresh();
         }
+
 
         ViewGroup parent = (ViewGroup) mRootView.getParent();
         if (parent != null) {
@@ -92,12 +149,13 @@ public abstract class BaseFragment extends RxFragment implements UIIterfaceFrag,
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
         try {
-            mUnbinder.unbind();
-        } catch (Exception e) {
+            if (mUnbinder != null)
+                mUnbinder.unbind();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
         }
-
+        super.onDestroyView();
     }
 
     private void initCommonView() {
@@ -137,7 +195,6 @@ public abstract class BaseFragment extends RxFragment implements UIIterfaceFrag,
     public void onRetry() {
         updateViews(false);
     }
-
 
 
     @Override

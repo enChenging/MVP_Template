@@ -21,6 +21,8 @@ import com.release.mvp.widget.RippleView;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * 要闻
  *

@@ -5,12 +5,14 @@ import android.view.View;
 
 import com.release.mvp.R;
 import com.release.mvp.dao.VideoInfo;
-import com.release.mvp.presenter.page.videoPage.VideoListPrsenter;
-import com.release.mvp.presenter.page.videoPage.VideoListView;
+import com.release.mvp.presenter.page.videoPage.video_list.VideoListPrsenter;
+import com.release.mvp.presenter.page.videoPage.video_list.VideoListView;
 import com.release.mvp.ui.adapter.VideoListAdapter;
 import com.release.mvp.ui.base.BaseFragment;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,15 +27,14 @@ import static com.release.mvp.ui.base.Constants.VIDEO_ID_KEY;
  * @create 2019/4/16
  * @Describe
  */
-public class VideoListFragment extends BaseFragment implements VideoListView {
+public class VideoListFragment extends BaseFragment<VideoListPrsenter> implements VideoListView {
 
     private static final String TAG = VideoListFragment.class.getSimpleName();
     @BindView(R.id.rv_photo_list)
     RecyclerView mRvPhotoList;
-
-    private VideoListPrsenter mPrsenter;
-    private VideoListAdapter mAdapter;
-    private String mVideoId;
+    @Inject
+    VideoListAdapter mAdapter;
+    public String mVideoId;
 
     public static VideoListFragment newInstance(String videoId) {
         VideoListFragment fragment = new VideoListFragment();
@@ -52,11 +53,7 @@ public class VideoListFragment extends BaseFragment implements VideoListView {
     public void initView(View view) {
 
         mVideoId = getArguments().getString(VIDEO_ID_KEY);
-
-        mPrsenter = new VideoListPrsenter(mVideoId, this);
-
-        mAdapter = new VideoListAdapter(R.layout.adapter_video_list, null);
-
+//        mAdapter = new VideoListAdapter(R.layout.adapter_video_list, null);
         mRvPhotoList.setHasFixedSize(true);
         mRvPhotoList.setLayoutManager(new LinearLayoutManager(getContext()));
         mRvPhotoList.setAdapter(mAdapter);
@@ -85,24 +82,24 @@ public class VideoListFragment extends BaseFragment implements VideoListView {
 
     @Override
     public void updateViews(boolean isRefresh) {
-        mPrsenter.loadData(isRefresh);
+        mPresenter.loadData(isRefresh);
     }
 
     @Override
-    public void loadData(List<VideoInfo> data) {
+    public void loadDataView(List<VideoInfo> data) {
 //        LogUtils.i(TAG, "loadData: "+s);
         mAdapter.setNewData(data);
 
     }
 
     @Override
-    public void loadMoreData(List<VideoInfo> data) {
+    public void loadMoreDataView(List<VideoInfo> data) {
         mAdapter.loadMoreComplete();
         mAdapter.addData(data);
     }
 
     @Override
-    public void loadNoData() {
+    public void loadNoDataView() {
         mAdapter.loadMoreEnd();
     }
 }

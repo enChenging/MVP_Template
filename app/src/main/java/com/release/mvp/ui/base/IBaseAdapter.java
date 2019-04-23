@@ -13,14 +13,17 @@ import java.util.List;
  * @Describe
  */
 public abstract class IBaseAdapter<T> extends android.widget.BaseAdapter {
-    public  Context mContext;
-    public  List<T> mDatas;
-    public  LayoutInflater mInflater;
+    public Context mContext;
+    public List<T> mDatas;
+    public LayoutInflater mInflater;
 
-    public IBaseAdapter(Context context, List<T> datas) {
+    public IBaseAdapter(Context context) {
         this.mContext = context;
-        this.mDatas = datas;
         mInflater = LayoutInflater.from(context);
+    }
+
+    public void addData(List<T> datas) {
+        this.mDatas = datas;
     }
 
 

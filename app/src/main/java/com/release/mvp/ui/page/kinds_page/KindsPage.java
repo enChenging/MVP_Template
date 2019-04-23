@@ -3,6 +3,8 @@ package com.release.mvp.ui.page.kinds_page;
 import android.view.View;
 
 import com.release.mvp.R;
+import com.release.mvp.presenter.page.kindsPage.KindsPagePresenter;
+import com.release.mvp.presenter.page.kindsPage.KindsPageView;
 import com.release.mvp.ui.base.BaseFragment;
 
 /**
@@ -10,7 +12,7 @@ import com.release.mvp.ui.base.BaseFragment;
  * @create 2019/3/22
  * @Describe
  */
-public class KindsPage extends BaseFragment {
+public class KindsPage extends BaseFragment<KindsPagePresenter> implements KindsPageView {
 
     public static KindsPage newInstance() {
         return new KindsPage();

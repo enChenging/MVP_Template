@@ -4,18 +4,22 @@ import android.annotation.SuppressLint;
 
 import com.release.mvp.bean.NewsInfoBean;
 import com.release.mvp.http.RetrofitHelper;
-import com.release.mvp.presenter.BasePresenter;
+import com.release.mvp.presenter.base.BasePresenter;
 import com.release.mvp.ui.adapter.item.NewsMultiItem;
 import com.release.mvp.utils.LogUtils;
 import com.release.mvp.utils.NewsUtils;
 import com.release.mvp.utils.ToastUtils;
+import com.release.mvp.utils.baserx.CommonSubscriber;
+
+import org.reactivestreams.Publisher;
+import org.reactivestreams.Subscription;
 
 import java.util.List;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.ObservableTransformer;
-import io.reactivex.disposables.Disposable;
+import javax.inject.Inject;
+
+import io.reactivex.Flowable;
+import io.reactivex.FlowableTransformer;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
@@ -26,27 +30,34 @@ import io.reactivex.functions.Predicate;
  * @create 2019/3/29
  * @Describe
  */
-public class NewsListPresenter implements BasePresenter {
+public class NewsListPresenter extends BasePresenter<NewsListView> {
 
     private static final String TAG = NewsListPresenter.class.getSimpleName();
-    private NewsListView mView;
-    private String mNewsId;
     private int mPage = 0;
+    public String mNewsId;
 
-    public NewsListPresenter(NewsListView view, String newsId) {
-        this.mView = view;
-        this.mNewsId = newsId;
+    @Inject
+    public NewsListPresenter(NewsListView view) {
+        super(view);
+    }
+
+
+    public void setNewsId(String newsId) {
+        mNewsId = newsId;
     }
 
     @SuppressLint("CheckResult")
     @Override
     public void loadData(boolean isRefresh) {
+
+        LogUtils.i(TAG, "loadData---mNewsId: " + mNewsId);
+
         RetrofitHelper.getImportantNewAPI(mNewsId, mPage)
-                .doOnSubscribe(new Consumer<Disposable>() {
+                .doOnSubscribe(new Consumer<Subscription>() {
                     @Override
-                    public void accept(Disposable disposable) throws Exception {
+                    public void accept(Subscription subscription) throws Exception {
                         if (!isRefresh) {
-                            mView.showLoading();
+                            view.showLoading();
                         }
                     }
                 })
@@ -54,37 +65,37 @@ public class NewsListPresenter implements BasePresenter {
                     @Override
                     public boolean test(NewsInfoBean newsInfo) throws Exception {
                         if (NewsUtils.isAbNews(newsInfo))
-                            mView.loadAdData(newsInfo);
+                            view.loadAdDataView(newsInfo);
                         return !NewsUtils.isAbNews(newsInfo);
                     }
                 })
                 .compose(observableTransformer)
-                .subscribe(new Consumer<List<NewsMultiItem>>() {
+                .subscribeWith(new CommonSubscriber<List<NewsMultiItem>>() {
                     @Override
-                    public void accept(List<NewsMultiItem> newsMultiItems) throws Exception {
+                    protected void _onNext(List<NewsMultiItem> newsMultiItems) {
                         LogUtils.d(TAG, "loadData--accept: ");
-                        mView.loadData(newsMultiItems);
+                        view.loadDataView(newsMultiItems);
                         mPage++;
                     }
-                }, new Consumer<Throwable>() {
+
                     @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        LogUtils.d(TAG, "loadData--throwable: " + throwable.toString());
+                    protected void _onError(String message) {
+                        LogUtils.d(TAG, "loadData--throwable: " + message);
                         if (isRefresh) {
-                            mView.finishRefresh();
-                            ToastUtils.showToast("刷新失败");
+                            view.finishRefresh();
+                            ToastUtils.show("刷新失败");
                         } else {
-                            mView.showNetError();
+                            view.showNetError();
                         }
                     }
-                }, new Action() {
+
                     @Override
-                    public void run() throws Exception {
+                    protected void _onComplete() {
                         LogUtils.d(TAG, "loadData--Action: ");
                         if (isRefresh) {
-                            mView.finishRefresh();
+                            view.finishRefresh();
                         } else {
-                            mView.hideLoading();
+                            view.hideLoading();
                         }
                     }
                 });
@@ -101,14 +112,14 @@ public class NewsListPresenter implements BasePresenter {
                     @Override
                     public void accept(List<NewsMultiItem> newsMultiItems) throws Exception {
                         LogUtils.d(TAG, "loadMoreData--accept: ");
-                        mView.loadMoreData(newsMultiItems);
+                        view.loadMoreDataView(newsMultiItems);
                         mPage++;
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
                         LogUtils.d(TAG, "loadMoreData--throwable: " + throwable.toString());
-                        mView.loadNoData();
+                        view.loadNoDataView();
                     }
                 }, new Action() {
                     @Override
@@ -119,9 +130,10 @@ public class NewsListPresenter implements BasePresenter {
     }
 
 
-    private ObservableTransformer<NewsInfoBean, List<NewsMultiItem>> observableTransformer = new ObservableTransformer<NewsInfoBean, List<NewsMultiItem>>() {
+    private FlowableTransformer<NewsInfoBean, List<NewsMultiItem>> observableTransformer = new FlowableTransformer<NewsInfoBean, List<NewsMultiItem>>() {
+
         @Override
-        public ObservableSource<List<NewsMultiItem>> apply(Observable<NewsInfoBean> upstream) {
+        public Publisher<List<NewsMultiItem>> apply(Flowable<NewsInfoBean> upstream) {
 
             return upstream.map(new Function<NewsInfoBean, NewsMultiItem>() {
                 @Override
@@ -132,7 +144,7 @@ public class NewsListPresenter implements BasePresenter {
                     }
                     return new NewsMultiItem(NewsMultiItem.ITEM_TYPE_NORMAL, newsInfo);
                 }
-            }).toList().toObservable().compose(mView.<List<NewsMultiItem>>bindToLife());
+            }).toList().toFlowable().compose(view.<List<NewsMultiItem>>bindToLife());
         }
     };
 }
