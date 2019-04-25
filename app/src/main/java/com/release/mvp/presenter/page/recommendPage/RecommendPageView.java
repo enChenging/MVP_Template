@@ -10,5 +10,5 @@ import java.util.List;
  * @create 2019/4/1
  * @Describe
  */
-public interface RecommendPageView extends LoadDataView<List<RecommendPageBean.DataBean>> {
+public interface RecommendPageView extends LoadDataView<List<RecommendPageBean.NewslistBean>> {
 }

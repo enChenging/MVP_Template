@@ -1,29 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardBackgroundColor="@color/white"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="0dp">
+    android:layout_height="wrap_content">
 
-    <RelativeLayout
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_tuijian"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="130dp"
+        android:layout_margin="15dp"
+        android:background="#ffffff"
+        android:elevation="5dp"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="5dp">
 
-        <ImageView
-            android:id="@+id/iv_bg"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="120dp" />
+            android:layout_height="match_parent"
+            android:layout_margin="5dp">
 
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:textColor="@color/white" />
+            <ImageView
+                android:id="@+id/iv_tuijian"
+                android:layout_width="120dp"
+                android:layout_height="match_parent"
+                android:layout_margin="15dp"
+                android:scaleType="fitXY" />
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_tuijian_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/iv_tuijian"
+                android:layout_toRightOf="@id/iv_tuijian"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textColor="#111111"
+                android:textSize="18sp" />
 
-</androidx.cardview.widget.CardView>
+            <TextView
+                android:id="@+id/tv_tuijian_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:ellipsize="end"
+                android:lines="3"
+                android:singleLine="true"
+                android:textColor="#777777"
+                android:textSize="14sp" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

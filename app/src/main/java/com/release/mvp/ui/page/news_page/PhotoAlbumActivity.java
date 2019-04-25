@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.viewpager.widget.ViewPager;
+
 import com.dl7.drag.DragSlopLayout;
 import com.release.mvp.R;
 import com.release.mvp.bean.PhotoSetInfoBean;
@@ -14,6 +16,7 @@ import com.release.mvp.presenter.page.newsPage.photo_album.PhotoAlbumView;
 import com.release.mvp.ui.adapter.PhotoSetAdapter;
 import com.release.mvp.ui.base.BaseActivity;
 import com.release.mvp.utils.StatusBarUtil;
+import com.release.mvp.widget.IToolBar;
 import com.release.mvp.widget.PhotoViewPager;
 
 import java.util.ArrayList;
@@ -21,13 +24,12 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import androidx.appcompat.widget.Toolbar;
-import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 
 import static com.release.mvp.ui.base.Constants.PHOTO_SET_KEY;
 
 /**
+ * 图集
  * @author Mr.release
  * @create 2019/4/16
  * @Describe
@@ -35,6 +37,8 @@ import static com.release.mvp.ui.base.Constants.PHOTO_SET_KEY;
 public class PhotoAlbumActivity extends BaseActivity<PhotoAlbumPresenter> implements PhotoAlbumView {
 
 
+    @Inject
+    PhotoSetAdapter mAdapter;
     @BindView(R.id.vp_photo)
     PhotoViewPager mVpPhoto;
     @BindView(R.id.tv_title2)
@@ -45,21 +49,13 @@ public class PhotoAlbumActivity extends BaseActivity<PhotoAlbumPresenter> implem
     TextView mTvCount;
     @BindView(R.id.tv_content)
     TextView mTvContent;
-    @BindView(R.id.tv_title)
-    TextView mTvTitle;
-    @BindView(R.id.tv_right)
-    TextView mTvRight;
-    @BindView(R.id.toolBar)
-    Toolbar mToolBar;
-    @BindView(R.id.drag_layout)
-    DragSlopLayout mDragLayout;
-    @BindView(R.id.ll_tool_bar)
-    LinearLayout mLlToolBar;
     @BindView(R.id.ll_bottom_content)
     LinearLayout mLlBottomContent;
+    @BindView(R.id.tool_bar)
+    IToolBar mToolBar;
+    @BindView(R.id.drag_layout)
+    DragSlopLayout mDragLayout;
 
-    @Inject
-    PhotoSetAdapter mAdapter;
     private boolean mIsHideToolbar = false;
     private List<PhotoSetInfoBean.PhotosBean> mPhotos;
 
@@ -80,6 +76,10 @@ public class PhotoAlbumActivity extends BaseActivity<PhotoAlbumPresenter> implem
 
         String photoSetId = getIntent().getStringExtra(PHOTO_SET_KEY);
         mPresenter.setPhotoSetId(photoSetId);
+
+        mToolBar.setToolBarBackgroundColor(R.color.transparent)
+                .setBackDrawable(R.drawable.toolbar_back_white)
+                .setTitleColor(R.color.white);
     }
 
     @Override
@@ -95,6 +95,8 @@ public class PhotoAlbumActivity extends BaseActivity<PhotoAlbumPresenter> implem
     @Override
     public void loadPhotoDataView(PhotoSetInfoBean photoSetBean) {
 
+        mToolBar.setTitleText(photoSetBean.getSetname());
+
         List<String> imgUrls = new ArrayList<>();
         mPhotos = photoSetBean.getPhotos();
         for (PhotoSetInfoBean.PhotosBean photo : mPhotos) {
@@ -106,9 +108,9 @@ public class PhotoAlbumActivity extends BaseActivity<PhotoAlbumPresenter> implem
         mVpPhoto.setOffscreenPageLimit(imgUrls.size());
 
         mTvCount.setText(mPhotos.size() + "");
-        mTvTitle.setText(photoSetBean.getSetname());
         mTvIndex.setText(1 + "/");
         mTvContent.setText(mPhotos.get(0).getNote());
+
 
         mVpPhoto.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
@@ -123,10 +125,10 @@ public class PhotoAlbumActivity extends BaseActivity<PhotoAlbumPresenter> implem
                 mIsHideToolbar = !mIsHideToolbar;
                 if (mIsHideToolbar) {
                     mDragLayout.scrollOutScreen(300);
-                    mLlToolBar.animate().translationY(-mLlToolBar.getBottom()).setDuration(300);
+                    mToolBar.animate().translationY(-mToolBar.getBottom()).setDuration(300);
                 } else {
                     mDragLayout.scrollInScreen(300);
-                    mLlToolBar.animate().translationY(0).setDuration(300);
+                    mToolBar.animate().translationY(0).setDuration(300);
                 }
             }
         });

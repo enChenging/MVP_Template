@@ -17,7 +17,10 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <include layout="@layout/tool_bar_back" />
+            <com.release.mvp.widget.IToolBar
+                android:id="@+id/tool_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
             <include layout="@layout/layout_news_content" />
 

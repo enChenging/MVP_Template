@@ -25,28 +25,15 @@ public final class ImageLoader {
 
 
     public static void loadFit(Context context, String url, ImageView view, int defaultResId) {
-        if (NetUtil.isNetworkAvailable(context)) {
-            view.setScaleType(ImageView.ScaleType.FIT_XY);
-            Glide.with(context).load(url).fitCenter().dontAnimate().placeholder(defaultResId).into(view);
-        } else {
-            view.setImageResource(defaultResId);
-        }
+        Glide.with(context).load(url).fitCenter().dontAnimate().placeholder(defaultResId).into(view);
     }
 
     public static void loadCenterCrop(Context context, String url, ImageView view, int defaultResId) {
-        if (NetUtil.isNetworkAvailable(context)) {
-            Glide.with(context).load(url).centerCrop().dontAnimate().placeholder(defaultResId).into(view);
-        } else {
-            view.setImageResource(defaultResId);
-        }
+        Glide.with(context).load(url).centerCrop().dontAnimate().placeholder(defaultResId).into(view);
     }
 
     public static void loadFitCenter(Context context, String url, ImageView view, int defaultResId) {
-        if (NetUtil.isNetworkAvailable(context)) {
-            Glide.with(context).load(url).fitCenter().dontAnimate().placeholder(defaultResId).into(view);
-        } else {
-            view.setImageResource(defaultResId);
-        }
+        Glide.with(context).load(url).fitCenter().dontAnimate().placeholder(defaultResId).into(view);
     }
 
     /**
@@ -75,14 +62,8 @@ public final class ImageLoader {
      * @param width
      * @param height
      */
-    public static void loadFitOverride(Context context, String url, ImageView view, int defaultResId,
-                                       int width, int height) {
-        if (NetUtil.isNetworkAvailable(context)) {
-            Glide.with(context).load(url).fitCenter().dontAnimate().override(width, height)
-                    .placeholder(defaultResId).into(view);
-        } else {
-            view.setImageResource(defaultResId);
-        }
+    public static void loadFitOverride(Context context, String url, ImageView view, int defaultResId, int width, int height) {
+        Glide.with(context).load(url).fitCenter().dontAnimate().override(width, height).placeholder(defaultResId).into(view);
     }
 
     /**

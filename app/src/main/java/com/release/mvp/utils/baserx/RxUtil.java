@@ -11,6 +11,7 @@ import io.reactivex.Flowable;
 import io.reactivex.FlowableEmitter;
 import io.reactivex.FlowableOnSubscribe;
 import io.reactivex.FlowableTransformer;
+import io.reactivex.ObservableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
@@ -35,6 +36,18 @@ public class RxUtil {
                         .observeOn(AndroidSchedulers.mainThread());
             }
         };
+    }
+
+    /**
+     * 统一线程处理
+     *
+     * @param <T>
+     * @return
+     */
+    public static <T> ObservableTransformer<T, T> rxObservableSchedulerHelper() {
+
+        return observable -> observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     /**

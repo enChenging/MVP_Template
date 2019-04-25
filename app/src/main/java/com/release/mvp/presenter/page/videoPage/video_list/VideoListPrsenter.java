@@ -7,6 +7,7 @@ import com.release.mvp.http.RetrofitHelper;
 import com.release.mvp.presenter.base.BasePresenter;
 import com.release.mvp.ui.page.video_page.VideoListFragment;
 import com.release.mvp.utils.LogUtils;
+import com.release.mvp.utils.ToastUtils;
 import com.release.mvp.utils.baserx.CommonSubscriber;
 
 import org.reactivestreams.Subscription;
@@ -15,7 +16,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -43,7 +43,9 @@ public class VideoListPrsenter extends BasePresenter<VideoListView> {
                 .doOnSubscribe(new Consumer<Subscription>() {
                     @Override
                     public void accept(Subscription subscription) throws Exception {
-                        view.showLoading();
+                        if (!isRefresh) {
+                            view.showLoading();
+                        }
                     }
                 })
                 .compose(view.bindToLife())
@@ -57,14 +59,22 @@ public class VideoListPrsenter extends BasePresenter<VideoListView> {
 
                     @Override
                     protected void _onError(String message) {
-                        LogUtils.e(TAG, "throwable: " + message);
-                        view.showNetError();
+                        if (isRefresh) {
+                            view.finishRefresh();
+                            ToastUtils.show("刷新失败");
+                        } else {
+                            view.showNetError();
+                        }
                     }
 
                     @Override
                     protected void _onComplete() {
                         LogUtils.i(TAG, "run: ");
-                        view.hideLoading();
+                        if (isRefresh) {
+                            view.finishRefresh();
+                        } else {
+                            view.hideLoading();
+                        }
                     }
                 });
     }
@@ -75,25 +85,25 @@ public class VideoListPrsenter extends BasePresenter<VideoListView> {
 
         RetrofitHelper.getVideoListAPI(mVideoListFragment.mVideoId, mPage)
                 .compose(view.bindToLife())
-                .subscribe(new Consumer<List<VideoInfo>>() {
-                               @Override
-                               public void accept(List<VideoInfo> videoInfoBeans) throws Exception {
-                                   LogUtils.i(TAG, "loadMoreData---accept: " + videoInfoBeans);
-                                   view.loadDataView(videoInfoBeans);
-                                   mPage++;
-                               }
-                           }
-                        , new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Exception {
-                                LogUtils.e(TAG, "loadMoreData---throwable: " + throwable.toString());
-                                view.showNetError();
-                            }
-                        }, new Action() {
-                            @Override
-                            public void run() throws Exception {
-                                LogUtils.i(TAG, "loadMoreData---run: ");
-                            }
-                        });
+                .subscribeWith(new CommonSubscriber<List<VideoInfo>>() {
+                    @Override
+                    protected void _onNext(List<VideoInfo> videoInfos) {
+                        LogUtils.i(TAG, "loadMoreData---accept: " + videoInfos);
+                        view.loadMoreDataView(videoInfos);
+                        mPage++;
+
+                    }
+
+                    @Override
+                    protected void _onError(String message) {
+                        LogUtils.e(TAG, "loadMoreData---throwable: " + message);
+                        view.loadNoDataView();
+                    }
+
+                    @Override
+                    protected void _onComplete() {
+                        LogUtils.i(TAG, "loadMoreData---run: ");
+                    }
+                });
     }
 }

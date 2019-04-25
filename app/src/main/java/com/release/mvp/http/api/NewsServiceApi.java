@@ -21,7 +21,7 @@ import retrofit2.http.Path;
  * @create 2019/3/29
  * @Describe
  */
-public interface NewsService {
+public interface NewsServiceApi {
 
     String CACHE_CONTROL_NETWORK = "Cache-Control: public, max-age=3600";
     // 避免出现 HTTP 403 Forbidden，参考：http://stackoverflow.com/questions/13670692/403-forbidden-with-java-but-not-web-browser

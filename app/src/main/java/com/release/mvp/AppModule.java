@@ -11,11 +11,13 @@ import com.release.mvp.injector.news_detail_module.NewsDetailActivityModule;
 import com.release.mvp.injector.news_special_module.NewsSpecialActivityModule;
 import com.release.mvp.injector.photo_album_module.PhotoAlbumActivityModule;
 import com.release.mvp.injector.splash_module.SplashActivityModule;
+import com.release.mvp.injector.web_detail_module.WebDetailActivityModule;
 import com.release.mvp.ui.guide.GuideActivity;
 import com.release.mvp.ui.home.MainActivity;
 import com.release.mvp.ui.page.news_page.NewsDetailActivity;
 import com.release.mvp.ui.page.news_page.NewsSpecialActivity;
 import com.release.mvp.ui.page.news_page.PhotoAlbumActivity;
+import com.release.mvp.ui.web_detail.WebDetailActivity;
 import com.release.mvp.ui.splash.SplashActivity;
 import com.release.mvp.utils.baserx.RxBus;
 
@@ -79,4 +81,8 @@ abstract class AppModule {
     @ActivityScope
     @ContributesAndroidInjector(modules = PhotoAlbumActivityModule.class)
     abstract PhotoAlbumActivity photoAlbumActivityInjector();
+
+    @ActivityScope
+    @ContributesAndroidInjector(modules = WebDetailActivityModule.class)
+    abstract WebDetailActivity eventDetailActivityInjector();
 }

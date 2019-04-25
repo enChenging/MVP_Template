@@ -10,8 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.dl7.tag.TagLayout;
@@ -27,16 +31,12 @@ import com.release.mvp.ui.base.BaseActivity;
 import com.release.mvp.utils.AnimateHelper;
 import com.release.mvp.utils.DefIconFactory;
 import com.release.mvp.utils.ImageLoader;
+import com.release.mvp.widget.IToolBar;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.ViewCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.Observable;
@@ -49,6 +49,8 @@ import io.reactivex.schedulers.Schedulers;
 import static com.release.mvp.ui.base.Constants.SPECIAL_KEY;
 
 /**
+ * 新闻专题
+ *
  * @author Mr.release
  * @create 2019/4/15
  * @Describe
@@ -56,18 +58,13 @@ import static com.release.mvp.ui.base.Constants.SPECIAL_KEY;
 public class NewsSpecialActivity extends BaseActivity<NewsSpecialPresenter> implements NewsSpecialView {
 
     private static final String TAG = NewsSpecialActivity.class.getSimpleName();
-    @BindView(R.id.tv_title)
-    TextView mTvTitle;
-    @BindView(R.id.tv_right)
-    TextView mTvRight;
-    @BindView(R.id.toolBar)
-    Toolbar mToolBar;
+
     @BindView(R.id.rv_news_list)
     RecyclerView mRvNewsList;
+    @BindView(R.id.tool_bar)
+    IToolBar mToolBar;
     @BindView(R.id.fab_coping)
     FloatingActionButton mFabCoping;
-    @BindView(R.id.ll_tool_bar)
-    LinearLayout mLlToolBar;
     @Inject
     NewsSpecialAdapter mAdapter;
 
@@ -112,7 +109,7 @@ public class NewsSpecialActivity extends BaseActivity<NewsSpecialPresenter> impl
 
         int topBarHeight = getResources().getDimensionPixelSize(R.dimen.default_toolbar_height);
 
-        mTopBarAnimator = AnimateHelper.doMoveVertical(mLlToolBar, (int) mLlToolBar.getTranslationY(), -topBarHeight, 0);
+        mTopBarAnimator = AnimateHelper.doMoveVertical(mToolBar, (int) mToolBar.getTranslationY(), -topBarHeight, 0);
 
         mRvNewsList.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -127,11 +124,11 @@ public class NewsSpecialActivity extends BaseActivity<NewsSpecialPresenter> impl
                 if (dy < 0 && !change) {
                     if (AnimateHelper.isRunning(mTopBarAnimator))
                         return;
-                    mTopBarAnimator = AnimateHelper.doMoveVertical(mLlToolBar, (int) mLlToolBar.getTranslationY(), 0, 300);
+                    mTopBarAnimator = AnimateHelper.doMoveVertical(mToolBar, (int) mToolBar.getTranslationY(), 0, 300);
                     change = true;
                 } else if (dy > 0 && change) {
                     AnimateHelper.stopAnimator(mTopBarAnimator);
-                    ViewCompat.setTranslationY(mLlToolBar, -topBarHeight);
+                    ViewCompat.setTranslationY(mToolBar, -topBarHeight);
                     change = false;
                 }
             }
@@ -152,22 +149,19 @@ public class NewsSpecialActivity extends BaseActivity<NewsSpecialPresenter> impl
     @Override
     public void loadHeadView(SpecialInfoBean specialBean) {
         View headView = LayoutInflater.from(this).inflate(R.layout.head_special, null);
-        ImageView mIvBanner = (ImageView) headView.findViewById(R.id.iv_banner);
-        ImageView back2 = headView.findViewById(R.id.back2);
-        back2.setOnClickListener(v -> finish());
-
+        ImageView mIvBanner = headView.findViewById(R.id.iv_banner);
 
         ImageLoader.loadFitCenter(this, specialBean.getBanner(), mIvBanner, DefIconFactory.provideIcon());
 
         // 添加导语
         if (!TextUtils.isEmpty(specialBean.getDigest())) {
-            ViewStub stub = (ViewStub) headView.findViewById(R.id.vs_digest);
+            ViewStub stub = headView.findViewById(R.id.vs_digest);
             assert stub != null;
             stub.inflate();
-            TextView tvDigest = (TextView) headView.findViewById(R.id.tv_digest);
+            TextView tvDigest = headView.findViewById(R.id.tv_digest);
             tvDigest.setText(specialBean.getDigest());
         }
-        mTagLayout = (TagLayout) headView.findViewById(R.id.tag_layout);
+        mTagLayout = headView.findViewById(R.id.tag_layout);
         mAdapter.addHeaderView(headView);
     }
 
@@ -232,4 +226,5 @@ public class NewsSpecialActivity extends BaseActivity<NewsSpecialPresenter> impl
     public void onViewClicked() {
         mLinearLayoutManager.scrollToPosition(0);
     }
+
 }

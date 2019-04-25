@@ -67,5 +67,8 @@
 
     </LinearLayout>
 
-    <include layout="@layout/tool_bar_bg_translate_back" />
+    <com.release.mvp.widget.IToolBar
+        android:id="@+id/tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 </com.dl7.drag.DragSlopLayout>

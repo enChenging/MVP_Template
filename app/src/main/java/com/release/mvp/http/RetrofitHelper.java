@@ -5,15 +5,16 @@ import com.release.mvp.BuildConfig;
 import com.release.mvp.bean.NewsDetailInfoBean;
 import com.release.mvp.bean.NewsInfoBean;
 import com.release.mvp.bean.PhotoSetInfoBean;
+import com.release.mvp.bean.RecommendPageBean;
 import com.release.mvp.bean.SpecialInfoBean;
 import com.release.mvp.dao.VideoInfo;
 import com.release.mvp.http.api.BaseURL;
-import com.release.mvp.http.api.NewsService;
+import com.release.mvp.http.api.NewsServiceApi;
+import com.release.mvp.http.api.RecommendServiceApi;
 import com.release.mvp.utils.CommonUtil;
 import com.release.mvp.utils.LogUtils;
 import com.release.mvp.utils.StringUtils;
 import com.release.mvp.utils.baserx.RxUtil;
-import com.release.mvp.utils.response.BaseResponse;
 
 import org.reactivestreams.Publisher;
 
@@ -26,10 +27,8 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Flowable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
 import okhttp3.Cache;
 import okhttp3.CacheControl;
 import okhttp3.Interceptor;
@@ -99,6 +98,14 @@ public class RetrofitHelper {
         return retrofit.create(cls);
     }
 
+    private static NewsServiceApi createNewsServiceApi() {
+        return createApi(BaseURL.NEWS_HOST, NewsServiceApi.class);
+    }
+
+    private static RecommendServiceApi createRecommendServiceApi() {
+        return createApi(BaseURL.RECOMMEND_HOST, RecommendServiceApi.class);
+    }
+
     /**
      * 打印返回的json数据拦截器
      */
@@ -158,8 +165,8 @@ public class RetrofitHelper {
         public Response intercept(Chain chain) throws IOException {
             // 有网络时 设置缓存超时时间1个小时
             int maxAge = 60 * 60;
-            // 无网络时，设置超时为1天
-            int maxStale = 60 * 60 * 24;
+            // 无网络时，设置超时为1周
+            int maxStale = 60 * 60 * 24 * 7;
             Request request = chain.request();
             if (CommonUtil.isNetworkAvailable(App.mContext)) {
                 //有网络时只从网络获取
@@ -200,10 +207,9 @@ public class RetrofitHelper {
             type = "headline";
         else
             type = "list";
-        return createApi(BaseURL.NEWS_HOST, NewsService.class)
+        return createNewsServiceApi()
                 .getImportantNews(type, newsId, page * INCREASE_PAGE)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxUtil.rxSchedulerHelper())
                 .flatMap(new Function<Map<String, List<NewsInfoBean>>, Publisher<NewsInfoBean>>() {
                     @Override
                     public Publisher<NewsInfoBean> apply(Map<String, List<NewsInfoBean>> stringListMap) throws Exception {
@@ -220,10 +226,9 @@ public class RetrofitHelper {
      * @return
      */
     public static Flowable<NewsDetailInfoBean> getNewsDetailAPI(String newsId) {
-        return createApi(BaseURL.NEWS_HOST, NewsService.class)
+        return createNewsServiceApi()
                 .getNewsDetail(newsId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxUtil.rxSchedulerHelper())
                 .flatMap(new Function<Map<String, NewsDetailInfoBean>, Publisher<NewsDetailInfoBean>>() {
                     @Override
                     public Publisher<NewsDetailInfoBean> apply(Map<String, NewsDetailInfoBean> stringNewsDetailInfoBeanMap) throws Exception {
@@ -240,10 +245,9 @@ public class RetrofitHelper {
      * @return
      */
     public static Flowable<SpecialInfoBean> getNewsSpecialAPI(String specialId) {
-        return createApi(BaseURL.NEWS_HOST, NewsService.class)
+        return createNewsServiceApi()
                 .getSpecial(specialId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxUtil.rxSchedulerHelper())
                 .flatMap(stringSpecialInfoBeanMap -> Flowable.just(stringSpecialInfoBeanMap.get(specialId)));
     }
 
@@ -255,7 +259,7 @@ public class RetrofitHelper {
      * @return
      */
     public static Flowable<PhotoSetInfoBean> getPhotoAlbumAPI(String photoId) {
-        return createApi(BaseURL.NEWS_HOST, NewsService.class)
+        return createNewsServiceApi()
                 .getPhotoAlbum(StringUtils.clipPhotoSetId(photoId))
                 .compose(RxUtil.rxSchedulerHelper());
     }
@@ -268,15 +272,21 @@ public class RetrofitHelper {
      * @return
      */
     public static Flowable<List<VideoInfo>> getVideoListAPI(String videoId, int page) {
-        return createApi(BaseURL.NEWS_HOST, NewsService.class)
+        return createNewsServiceApi()
                 .getVideoList(videoId, page * INCREASE_PAGE / 2)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxUtil.rxSchedulerHelper())
                 .flatMap(new Function<Map<String, List<VideoInfo>>, Publisher<List<VideoInfo>>>() {
                     @Override
                     public Publisher<List<VideoInfo>> apply(Map<String, List<VideoInfo>> stringListMap) throws Exception {
                         return Flowable.just(stringListMap.get(videoId));
                     }
                 });
+    }
+
+    public static Flowable<RecommendPageBean> getRecommendData(String key,int mum) {
+        return createRecommendServiceApi()
+                .getRecommendData(key, mum * INCREASE_PAGE / 2)
+                .compose(RxUtil.rxSchedulerHelper());
+
     }
 }

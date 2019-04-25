@@ -29,4 +29,9 @@ public class Constants {
     public static final String PHOTO_SET_KEY = "PhotoSetKey";
     public static final String VIDEO_ID_KEY = "VideoIdKey";
 
+
+    public static final String RECOMMEND_TITLE = "recom_title";
+    public static final String RECOMMEND_CTIME = "recom_cTime";
+    public static final String RECOMMEND_DESC = "recom_desc";
+    public static final String RECOMMEND_HTML = "recom_html";
 }

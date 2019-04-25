@@ -62,16 +62,19 @@ public class NewsSpecialPresenter extends BasePresenter<NewsSpecialView> {
                 .subscribeWith(new CommonSubscriber<List<SpecialItem>>() {
                     @Override
                     protected void _onNext(List<SpecialItem> specialItems) {
+                        LogUtils.i(TAG, "_onNext: ");
                         view.loadDataView(specialItems);
                     }
 
                     @Override
                     protected void _onError(String message) {
+                        LogUtils.i(TAG, "_onError: ");
                         view.showNetError();
                     }
 
                     @Override
                     protected void _onComplete() {
+                        LogUtils.i(TAG, "_onComplete: ");
                         view.hideLoading();
                     }
                 });

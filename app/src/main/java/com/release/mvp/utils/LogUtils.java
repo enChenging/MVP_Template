@@ -12,7 +12,7 @@ public class LogUtils {
         throw new UnsupportedOperationException("cannot be instantiated");
     }
 
-    public static boolean isDebug = false;
+    public static boolean isDebug = true;
 
     private static final String TAG = LogUtils.class.getName();
 

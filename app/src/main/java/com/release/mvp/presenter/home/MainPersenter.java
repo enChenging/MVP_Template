@@ -42,7 +42,7 @@ public class MainPersenter extends BasePresenter<MainView> {
                 Toast.makeText(context, "再按一次退出", Toast.LENGTH_SHORT).show();
                 mExitTime = System.currentTimeMillis();
             } else {
-                AppManager.getAppManager().appExit(context);
+                AppManager.appExit(context);
             }
         }
     }

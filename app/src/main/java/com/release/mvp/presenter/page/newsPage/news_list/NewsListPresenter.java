@@ -20,7 +20,6 @@ import javax.inject.Inject;
 
 import io.reactivex.Flowable;
 import io.reactivex.FlowableTransformer;
-import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
@@ -108,22 +107,22 @@ public class NewsListPresenter extends BasePresenter<NewsListView> {
         LogUtils.i(TAG, "loadMoreData: ");
         RetrofitHelper.getImportantNewAPI("T1348647909107", mPage)
                 .compose(observableTransformer)
-                .subscribe(new Consumer<List<NewsMultiItem>>() {
+                .subscribeWith(new CommonSubscriber<List<NewsMultiItem>>() {
                     @Override
-                    public void accept(List<NewsMultiItem> newsMultiItems) throws Exception {
+                    protected void _onNext(List<NewsMultiItem> newsMultiItems) {
                         LogUtils.d(TAG, "loadMoreData--accept: ");
                         view.loadMoreDataView(newsMultiItems);
                         mPage++;
                     }
-                }, new Consumer<Throwable>() {
+
                     @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        LogUtils.d(TAG, "loadMoreData--throwable: " + throwable.toString());
+                    protected void _onError(String message) {
+                        LogUtils.d(TAG, "loadMoreData--throwable: " + message);
                         view.loadNoDataView();
                     }
-                }, new Action() {
+
                     @Override
-                    public void run() throws Exception {
+                    protected void _onComplete() {
                         LogUtils.d(TAG, "loadMoreData--Action: ");
                     }
                 });

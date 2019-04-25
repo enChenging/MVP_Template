@@ -1,57 +1,33 @@
 package com.release.mvp.ui.adapter;
 
-import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+import androidx.annotation.Nullable;
 
-import com.bumptech.glide.Glide;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.release.mvp.R;
-import com.release.mvp.ui.base.IBaseAdapter;
 import com.release.mvp.bean.RecommendPageBean;
-import java.util.List;
+import com.release.mvp.utils.DefIconFactory;
+import com.release.mvp.utils.ImageLoader;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import java.util.List;
 
 /**
  * @author Mr.release
  * @create 2019/3/22
  * @Describe
  */
-public class RecommendAdapter extends IBaseAdapter<RecommendPageBean.DataBean> {
+public class RecommendAdapter extends BaseQuickAdapter<RecommendPageBean.NewslistBean, BaseViewHolder> {
 
-    public RecommendAdapter(Context context) {
-        super(context);
+
+    public RecommendAdapter(int layoutResId, @Nullable List<RecommendPageBean.NewslistBean> data) {
+        super(layoutResId, data);
     }
 
     @Override
-    public View getView(int position, View view, ViewGroup parent) {
-        ViewHolder holder;
-        if (view == null) {
-            view = mInflater.inflate(R.layout.item_recommend, null);
-            holder = new ViewHolder(view);
-            view.setTag(holder);
-        } else {
-            holder = (ViewHolder) view.getTag();
-        }
+    protected void convert(BaseViewHolder helper, RecommendPageBean.NewslistBean item) {
 
-        RecommendPageBean.DataBean dataBean = mDatas.get(position);
-        Glide.with(mContext).load(dataBean.getImage()).optionalCenterCrop().into(holder.iv_bg);
-        holder.tv_title.setText(dataBean.getTitle());
-
-        return view;
-    }
-
-    static class ViewHolder {
-        @BindView(R.id.iv_bg)
-        ImageView iv_bg;
-        @BindView(R.id.tv_title)
-        TextView tv_title;
-
-        public ViewHolder(View view) {
-            ButterKnife.bind(this, view);
-        }
+        ImageLoader.loadFitCenter(mContext, item.getPicUrl(), helper.getView(R.id.iv_tuijian), DefIconFactory.provideIcon());
+        helper.setText(R.id.tv_tuijian_title, item.getTitle());
+        helper.setText(R.id.tv_tuijian_time, item.getCtime());
     }
 }

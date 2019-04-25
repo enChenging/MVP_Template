@@ -12,6 +12,10 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.ViewCompat;
+import androidx.core.widget.NestedScrollView;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.release.mvp.R;
 import com.release.mvp.bean.NewsDetailInfoBean;
@@ -22,34 +26,28 @@ import com.release.mvp.utils.AnimateHelper;
 import com.release.mvp.utils.ListUtils;
 import com.release.mvp.utils.NewsUtils;
 import com.release.mvp.widget.EmptyLayout;
+import com.release.mvp.widget.IToolBar;
 import com.release.mvp.widget.PullScrollView;
 import com.zzhoujay.richtext.RichText;
 import com.zzhoujay.richtext.callback.OnUrlClickListener;
 
 import java.util.List;
 
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.ViewCompat;
-import androidx.core.widget.NestedScrollView;
 import butterknife.BindView;
 import butterknife.OnClick;
 
 import static com.release.mvp.ui.base.Constants.NEWS_ID_KEY;
 
 /**
+ * 新闻详情
  * @author Mr.release
  * @create 2019/4/15
  * @Describe
  */
 public class NewsDetailActivity extends BaseActivity<NewsDetailPresenter> implements NewsDetailView {
-
-
-    @BindView(R.id.tv_title)
-    TextView mTvTitle;
-    @BindView(R.id.tv_right)
-    TextView mTvRight;
-    @BindView(R.id.toolBar)
-    Toolbar mToolBar;
+    private static final String TAG = NewsDetailActivity.class.getSimpleName();
+    @BindView(R.id.tool_bar)
+    IToolBar mToolBar;
     @BindView(R.id.tv_title_content)
     TextView mTvTitleContent;
     @BindView(R.id.tv_source)
@@ -76,12 +74,9 @@ public class NewsDetailActivity extends BaseActivity<NewsDetailPresenter> implem
     Toolbar mToolBar2;
     @BindView(R.id.ll_top_bar2)
     LinearLayout mLlTopBar2;
-    @BindView(R.id.empty_layout)
-    EmptyLayout mEmptyLayout;
-    @BindView(R.id.ll_tool_bar)
-    LinearLayout mLlToolBar;
     @BindView(R.id.fab_coping)
     FloatingActionButton mFabCoping;
+
 
     private int mMinScrollSlop;
     private Animator mTopBarAnimator;
@@ -99,7 +94,6 @@ public class NewsDetailActivity extends BaseActivity<NewsDetailPresenter> implem
     private void startInside(String newsId) {
         Intent intent = new Intent(this, NewsDetailActivity.class);
         intent.putExtra(NEWS_ID_KEY, newsId);
-        finish();
         startActivity(intent);
         overridePendingTransition(R.anim.slide_bottom_entry, R.anim.hold);
     }
@@ -111,8 +105,8 @@ public class NewsDetailActivity extends BaseActivity<NewsDetailPresenter> implem
 
     @Override
     public void initView() {
-        mToolBar.setBackgroundColor(getResources().getColor(R.color.white));
-        String newsId = getIntent().getStringExtra(NEWS_ID_KEY);
+        Intent intent = getIntent();
+        String newsId = intent.getStringExtra(NEWS_ID_KEY);
         mPresenter.setNewsId(newsId);
 
         RichText.initCacheDir(this);
@@ -121,6 +115,7 @@ public class NewsDetailActivity extends BaseActivity<NewsDetailPresenter> implem
         // 最小触摸滑动距离
         mMinScrollSlop = ViewConfiguration.get(this).getScaledTouchSlop();
     }
+
 
     @Override
     public void initListener() {
@@ -185,6 +180,7 @@ public class NewsDetailActivity extends BaseActivity<NewsDetailPresenter> implem
 
     @Override
     public void loadDataView(NewsDetailInfoBean newsDetailInfoBean) {
+
         mTvTitleContent.setText(newsDetailInfoBean.getTitle());
         mTvSource.setText(newsDetailInfoBean.getSource());
         mTvTime.setText(newsDetailInfoBean.getPtime());
@@ -192,6 +188,7 @@ public class NewsDetailActivity extends BaseActivity<NewsDetailPresenter> implem
         RichText.from(newsDetailInfoBean.getBody()).into(mTvContent);
         _handleSpInfo(newsDetailInfoBean.getSpinfo());
         _handleRelatedNews(newsDetailInfoBean);
+
     }
 
     /**
@@ -236,6 +233,12 @@ public class NewsDetailActivity extends BaseActivity<NewsDetailPresenter> implem
             mNextNewsId = newsDetailBean.getRelative_sys().get(0).getId();
             mTvNextTitle.setText(newsDetailBean.getRelative_sys().get(0).getTitle());
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        finish();
     }
 
     @Override

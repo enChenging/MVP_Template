@@ -33,8 +33,8 @@ ext {
             "rxlife-components"            : "com.trello.rxlifecycle3:rxlifecycle-components:3.0.0",
             "FlycoTabLayout"               : "com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar",
             "FlycoLabelView_Lib"           : "com.flyco.labelview:FlycoLabelView_Lib:1.0.2@aar",
-            "okhttp3"                      : "com.squareup.okhttp3:okhttp:3.10.0",
-            "okhttp3-logging"              : "com.squareup.okhttp3:logging-interceptor:3.10.0",
+            "okhttp3"                      : "com.squareup.okhttp3:okhttp:3.12.0",
+            "okhttp3-logging"              : "com.squareup.okhttp3:logging-interceptor:3.12.0",
             "retrofit2"                    : "com.squareup.retrofit2:retrofit:2.5.0",
             "retrofit2-converter-gson"     : "com.squareup.retrofit2:converter-gson:2.5.0",
             "retrofit2-converter-scalars"  : "com.squareup.retrofit2:converter-scalars:2.5.0",
@@ -53,7 +53,5 @@ ext {
             "dagger-android-support"       : "com.google.dagger:dagger-android-support:2.21",
             "dagger-android-processor"     : "com.google.dagger:dagger-android-processor:2.21",
             "dagger-compiler"              : "com.google.dagger:dagger-compiler:2.21",
-
-
     ]
 }

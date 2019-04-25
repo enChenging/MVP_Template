@@ -71,7 +71,7 @@ public class SplashPresenter extends BasePresenter<SplashView> {
     }
 
     public void exit(Context context) {
-        AppManager.getAppManager().appExit(context);
+        AppManager.appExit(context);
     }
 
 

@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import com.release.mvp.R;
 import com.release.mvp.presenter.base.BaseView;
 import com.release.mvp.presenter.base.Presenter;
+import com.release.mvp.utils.AppManager;
 import com.release.mvp.utils.StatusBarUtil;
 import com.release.mvp.utils.SwipeRefreshHelper;
 import com.release.mvp.widget.EmptyLayout;
@@ -77,6 +78,8 @@ public abstract class BaseActivity<T extends Presenter> extends RxAppCompatActiv
         initSwipeRefresh();
 
         updateViews(false);
+
+        AppManager.addActivity(this);
     }
 
     @Override
@@ -154,5 +157,11 @@ public abstract class BaseActivity<T extends Presenter> extends RxAppCompatActiv
     public void finish() {
         super.finish();
         overridePendingTransition(R.anim.hold, R.anim.slide_right_exit);
+    }
+
+    @Override
+    protected void onDestroy() {
+        AppManager.removeActivity(this);
+        super.onDestroy();
     }
 }

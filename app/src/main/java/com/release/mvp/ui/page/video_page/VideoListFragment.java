@@ -3,6 +3,11 @@ package com.release.mvp.ui.page.video_page;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.release.mvp.R;
 import com.release.mvp.dao.VideoInfo;
 import com.release.mvp.presenter.page.videoPage.video_list.VideoListPrsenter;
@@ -14,9 +19,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import cn.jzvd.Jzvd;
 
@@ -53,7 +55,7 @@ public class VideoListFragment extends BaseFragment<VideoListPrsenter> implement
     public void initView(View view) {
 
         mVideoId = getArguments().getString(VIDEO_ID_KEY);
-//        mAdapter = new VideoListAdapter(R.layout.adapter_video_list, null);
+
         mRvPhotoList.setHasFixedSize(true);
         mRvPhotoList.setLayoutManager(new LinearLayoutManager(getContext()));
         mRvPhotoList.setAdapter(mAdapter);
@@ -78,6 +80,13 @@ public class VideoListFragment extends BaseFragment<VideoListPrsenter> implement
                 }
             }
         });
+
+        mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                mPresenter.loadMoreData();
+            }
+        }, mRvPhotoList);
     }
 
     @Override
@@ -87,7 +96,6 @@ public class VideoListFragment extends BaseFragment<VideoListPrsenter> implement
 
     @Override
     public void loadDataView(List<VideoInfo> data) {
-//        LogUtils.i(TAG, "loadData: "+s);
         mAdapter.setNewData(data);
 
     }

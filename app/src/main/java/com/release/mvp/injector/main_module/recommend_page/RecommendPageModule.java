@@ -1,5 +1,6 @@
 package com.release.mvp.injector.main_module.recommend_page;
 
+import com.release.mvp.R;
 import com.release.mvp.injector.base.BaseFragmentModule;
 import com.release.mvp.injector.base.Fragment;
 import com.release.mvp.injector.base.FragmentScope;
@@ -33,6 +34,6 @@ public abstract class RecommendPageModule {
     @Provides
     @FragmentScope
     static RecommendAdapter recommendAdapter(MainActivity activity) {
-        return new RecommendAdapter(activity);
+        return new RecommendAdapter(R.layout.item_recommend, null);
     }
 }
