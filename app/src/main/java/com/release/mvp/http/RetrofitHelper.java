@@ -68,7 +68,7 @@ public class RetrofitHelper {
         if (builder == null) {
             synchronized (RetrofitHelper.class) {
                 if (builder == null) {
-
+                    HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory();
                     HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
                     interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
                     Cache cache = new Cache(new File(App.mContext.getCacheDir(), "HttpCache"), 1024 * 1024 * 10);
@@ -76,6 +76,7 @@ public class RetrofitHelper {
                             .cache(cache)
                             .addInterceptor(new headerIntercepteor())
                             .addNetworkInterceptor(new CacheInterceptor())
+                            .sslSocketFactory(sslParams.sSLSocketFactory,sslParams.trustManager)
                             .retryOnConnectionFailure(true)
                             .connectTimeout(30, TimeUnit.SECONDS)
                             .writeTimeout(20, TimeUnit.SECONDS)
