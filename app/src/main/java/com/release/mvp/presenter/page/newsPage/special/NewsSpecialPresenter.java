@@ -45,7 +45,8 @@ public class NewsSpecialPresenter extends BasePresenter<NewsSpecialView> {
     @SuppressLint("CheckResult")
     @Override
     public void loadData() {
-        RetrofitHelper.getNewsSpecialAPI(specialId)
+        RetrofitHelper
+                .getNewsSpecialAPI(specialId)
                 .doOnSubscribe(subscription -> view.hideLoading())
                 .flatMap(new Function<SpecialInfoBean, Publisher<SpecialItem>>() {
                     @Override
@@ -85,7 +86,8 @@ public class NewsSpecialPresenter extends BasePresenter<NewsSpecialView> {
         final SpecialItem[] specialItems = new SpecialItem[specialBean.getTopics().size() + 1];
 
 
-        return Flowable.fromIterable(specialBean.getTopics())
+        return Flowable
+                .fromIterable(specialBean.getTopics())
                 // 获取头部
                 .doOnNext(new Consumer<SpecialInfoBean.TopicsBean>() {
                     @Override

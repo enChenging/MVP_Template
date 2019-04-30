@@ -51,7 +51,8 @@ public class NewsListPresenter extends BasePresenter<NewsListView> {
 
         LogUtils.i(TAG, "loadData---mNewsId: " + mNewsId);
 
-        RetrofitHelper.getImportantNewAPI(mNewsId, mPage)
+        RetrofitHelper
+                .getImportantNewAPI(mNewsId, mPage)
                 .doOnSubscribe(new Consumer<Subscription>() {
                     @Override
                     public void accept(Subscription subscription) throws Exception {
@@ -105,7 +106,8 @@ public class NewsListPresenter extends BasePresenter<NewsListView> {
     @Override
     public void loadMoreData() {
         LogUtils.i(TAG, "loadMoreData: ");
-        RetrofitHelper.getImportantNewAPI("T1348647909107", mPage)
+        RetrofitHelper
+                .getImportantNewAPI("T1348647909107", mPage)
                 .compose(observableTransformer)
                 .subscribeWith(new CommonSubscriber<List<NewsMultiItem>>() {
                     @Override
@@ -134,16 +136,20 @@ public class NewsListPresenter extends BasePresenter<NewsListView> {
         @Override
         public Publisher<List<NewsMultiItem>> apply(Flowable<NewsInfoBean> upstream) {
 
-            return upstream.map(new Function<NewsInfoBean, NewsMultiItem>() {
-                @Override
-                public NewsMultiItem apply(NewsInfoBean newsInfo) throws Exception {
+            return upstream
+                    .map(new Function<NewsInfoBean, NewsMultiItem>() {
+                        @Override
+                        public NewsMultiItem apply(NewsInfoBean newsInfo) throws Exception {
 
-                    if (NewsUtils.isNewsPhotoSet(newsInfo.getSkipType())) {
-                        return new NewsMultiItem(NewsMultiItem.ITEM_TYPE_PHOTO_SET, newsInfo);
-                    }
-                    return new NewsMultiItem(NewsMultiItem.ITEM_TYPE_NORMAL, newsInfo);
-                }
-            }).toList().toFlowable().compose(view.<List<NewsMultiItem>>bindToLife());
+                            if (NewsUtils.isNewsPhotoSet(newsInfo.getSkipType())) {
+                                return new NewsMultiItem(NewsMultiItem.ITEM_TYPE_PHOTO_SET, newsInfo);
+                            }
+                            return new NewsMultiItem(NewsMultiItem.ITEM_TYPE_NORMAL, newsInfo);
+                        }
+                    })
+                    .toList()
+                    .toFlowable()
+                    .compose(view.<List<NewsMultiItem>>bindToLife());
         }
     };
 }

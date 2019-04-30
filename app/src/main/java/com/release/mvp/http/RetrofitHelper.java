@@ -76,7 +76,7 @@ public class RetrofitHelper {
                             .cache(cache)
                             .addInterceptor(new headerIntercepteor())
                             .addNetworkInterceptor(new CacheInterceptor())
-                            .sslSocketFactory(sslParams.sSLSocketFactory,sslParams.trustManager)
+                            .sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
                             .retryOnConnectionFailure(true)
                             .connectTimeout(30, TimeUnit.SECONDS)
                             .writeTimeout(20, TimeUnit.SECONDS)
@@ -210,13 +210,13 @@ public class RetrofitHelper {
             type = "list";
         return createNewsServiceApi()
                 .getImportantNews(type, newsId, page * INCREASE_PAGE)
-                .compose(RxUtil.rxSchedulerHelper())
                 .flatMap(new Function<Map<String, List<NewsInfoBean>>, Publisher<NewsInfoBean>>() {
                     @Override
                     public Publisher<NewsInfoBean> apply(Map<String, List<NewsInfoBean>> stringListMap) throws Exception {
                         return Flowable.fromIterable(stringListMap.get(newsId));
                     }
-                });
+                })
+                .compose(RxUtil.rxSchedulerHelper());
     }
 
 
@@ -229,13 +229,13 @@ public class RetrofitHelper {
     public static Flowable<NewsDetailInfoBean> getNewsDetailAPI(String newsId) {
         return createNewsServiceApi()
                 .getNewsDetail(newsId)
-                .compose(RxUtil.rxSchedulerHelper())
                 .flatMap(new Function<Map<String, NewsDetailInfoBean>, Publisher<NewsDetailInfoBean>>() {
                     @Override
                     public Publisher<NewsDetailInfoBean> apply(Map<String, NewsDetailInfoBean> stringNewsDetailInfoBeanMap) throws Exception {
                         return Flowable.just(stringNewsDetailInfoBeanMap.get(newsId));
                     }
-                });
+                })
+                .compose(RxUtil.rxSchedulerHelper());
     }
 
 
@@ -248,8 +248,8 @@ public class RetrofitHelper {
     public static Flowable<SpecialInfoBean> getNewsSpecialAPI(String specialId) {
         return createNewsServiceApi()
                 .getSpecial(specialId)
-                .compose(RxUtil.rxSchedulerHelper())
-                .flatMap(stringSpecialInfoBeanMap -> Flowable.just(stringSpecialInfoBeanMap.get(specialId)));
+                .flatMap(stringSpecialInfoBeanMap -> Flowable.just(stringSpecialInfoBeanMap.get(specialId)))
+                .compose(RxUtil.rxSchedulerHelper());
     }
 
 
@@ -275,16 +275,16 @@ public class RetrofitHelper {
     public static Flowable<List<VideoInfo>> getVideoListAPI(String videoId, int page) {
         return createNewsServiceApi()
                 .getVideoList(videoId, page * INCREASE_PAGE / 2)
-                .compose(RxUtil.rxSchedulerHelper())
                 .flatMap(new Function<Map<String, List<VideoInfo>>, Publisher<List<VideoInfo>>>() {
                     @Override
                     public Publisher<List<VideoInfo>> apply(Map<String, List<VideoInfo>> stringListMap) throws Exception {
                         return Flowable.just(stringListMap.get(videoId));
                     }
-                });
+                })
+                .compose(RxUtil.rxSchedulerHelper());
     }
 
-    public static Flowable<RecommendPageBean> getRecommendData(String key,int mum) {
+    public static Flowable<RecommendPageBean> getRecommendData(String key, int mum) {
         return createRecommendServiceApi()
                 .getRecommendData(key, mum * INCREASE_PAGE / 2)
                 .compose(RxUtil.rxSchedulerHelper());

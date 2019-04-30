@@ -9,7 +9,7 @@ import android.widget.Toast;
 import com.flyco.tablayout.SlidingTabLayout;
 import com.release.mvp.R;
 import com.release.mvp.dao.NewsTypeInfo;
-import com.release.mvp.presenter.page.newsPage.page.NewsPagePresenterImpl;
+import com.release.mvp.presenter.page.newsPage.page.NewsPagePresenter;
 import com.release.mvp.presenter.page.newsPage.page.NewsPageView;
 import com.release.mvp.ui.base.BaseFragment;
 import com.release.mvp.ui.base.ViewPagerAdapter;
@@ -29,7 +29,7 @@ import butterknife.OnClick;
  * @create 2019/3/22
  * @Describe
  */
-public class NewsPage extends BaseFragment<NewsPagePresenterImpl> implements NewsPageView {
+public class NewsPage extends BaseFragment<NewsPagePresenter> implements NewsPageView {
 
     @BindView(R.id.view_pager)
     ViewPager mViewPager;

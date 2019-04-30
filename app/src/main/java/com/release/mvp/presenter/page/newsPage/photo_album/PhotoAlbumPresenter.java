@@ -37,7 +37,8 @@ public class PhotoAlbumPresenter extends BasePresenter<PhotoAlbumView> {
     @Override
     public void loadData() {
         LogUtils.i(TAG, "loadData---mPhotoSetId: " + mPhotoSetId);
-        RetrofitHelper.getPhotoAlbumAPI(mPhotoSetId)
+        RetrofitHelper
+                .getPhotoAlbumAPI(mPhotoSetId)
                 .doOnSubscribe(new Consumer<Subscription>() {
                     @Override
                     public void accept(Subscription subscription) throws Exception {

@@ -40,7 +40,10 @@ public class NewsDetailPresenter extends BasePresenter<NewsDetailView> {
     @Override
     public void loadData() {
 
-        RetrofitHelper.getNewsDetailAPI(mNewsId)
+        //EE0OEIF90001899O
+        LogUtils.i(TAG, "loadData: " + mNewsId);
+        RetrofitHelper
+                .getNewsDetailAPI(mNewsId)
                 .doOnSubscribe(new Consumer<Subscription>() {
                     @Override
                     public void accept(Subscription subscription) throws Exception {
@@ -59,6 +62,7 @@ public class NewsDetailPresenter extends BasePresenter<NewsDetailView> {
                 .subscribeWith(new CommonSubscriber<NewsDetailInfoBean>() {
                     @Override
                     protected void _onNext(NewsDetailInfoBean newsDetailInfoBean) {
+                        LogUtils.i(TAG, "_onNext: " + newsDetailInfoBean);
                         view.loadDataView(newsDetailInfoBean);
                     }
 
@@ -85,11 +89,11 @@ public class NewsDetailPresenter extends BasePresenter<NewsDetailView> {
             for (NewsDetailInfoBean.ImgBean imgEntity : newsDetailBean.getImg()) {
                 String ref = imgEntity.getRef();
                 String src = imgEntity.getSrc();
-                LogUtils.i(TAG, "imgEntity: " + imgEntity.toString());
+//                LogUtils.i(TAG, "imgEntity: " + imgEntity.toString());
                 String img = HTML_IMG_TEMPLATE.replace("http", src);
                 body = body.replaceAll(ref, img);
-                LogUtils.i(TAG, "img: " + img);
-                LogUtils.i(TAG, "body: " + body);
+//                LogUtils.i(TAG, "img: " + img);
+//                LogUtils.i(TAG, "body: " + body);
             }
             newsDetailBean.setBody(body);
         }

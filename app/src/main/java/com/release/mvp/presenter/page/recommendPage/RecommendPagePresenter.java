@@ -25,7 +25,8 @@ public class RecommendPagePresenter extends BasePresenter<RecommendPageView> {
     @SuppressLint("CheckResult")
     @Override
     public void loadData() {
-        RetrofitHelper.getRecommendData("4a0090627cf07a50def18da875165740", 20)
+        RetrofitHelper
+                .getRecommendData("4a0090627cf07a50def18da875165740", 20)
                 .doOnSubscribe(subscription -> view.showLoading())
                 .compose(view.bindToLife())
                 .subscribeWith(new CommonSubscriber<RecommendPageBean>() {

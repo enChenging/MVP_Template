@@ -39,7 +39,8 @@ public class VideoListPrsenter extends BasePresenter<VideoListView> {
     @SuppressLint("CheckResult")
     @Override
     public void loadData(boolean isRefresh) {
-        RetrofitHelper.getVideoListAPI(mVideoListFragment.mVideoId, mPage)
+        RetrofitHelper
+                .getVideoListAPI(mVideoListFragment.mVideoId, mPage)
                 .doOnSubscribe(new Consumer<Subscription>() {
                     @Override
                     public void accept(Subscription subscription) throws Exception {
@@ -83,7 +84,8 @@ public class VideoListPrsenter extends BasePresenter<VideoListView> {
     @Override
     public void loadMoreData() {
 
-        RetrofitHelper.getVideoListAPI(mVideoListFragment.mVideoId, mPage)
+        RetrofitHelper
+                .getVideoListAPI(mVideoListFragment.mVideoId, mPage)
                 .compose(view.bindToLife())
                 .subscribeWith(new CommonSubscriber<List<VideoInfo>>() {
                     @Override
