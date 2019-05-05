@@ -5,14 +5,13 @@ MVP_Template
 
 用到的第三方库
 -
-
-- [PermissionsDispatcher](https://github.com/permissions-dispatcher/PermissionsDispatcher)
-	：Android 6.0中处理运行时权限检测
 - [glide](https://github.com/bumptech/glide)
 	：Google出品的图片加载库， 
 [glide官方文档](https://mrfu.me/2016/02/27/Glide_Getting_Started/)
 - [butterknife](https://github.com/JakeWharton/butterknife)
 	：Android控件依赖注入
+- [rxpermissions](https://github.com/tbruyelle/RxPermissions)
+	：Android 6.0中处理运行时权限检测
 - [rxjava](https://github.com/ReactiveX/RxJava)
 	：一个实现异步操作的库
 - [RxAndroid](https://github.com/ReactiveX/RxAndroid)
