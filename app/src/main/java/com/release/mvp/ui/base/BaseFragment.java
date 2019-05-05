@@ -127,6 +127,20 @@ public abstract class BaseFragment<T extends Presenter> extends RxFragment imple
     }
 
     @Override
+    public void initView(View view) {
+        
+    }
+
+    @Override
+    public void initListener() {
+    }
+
+    @Override
+    public void updateViews(boolean isRefresh) {
+
+    }
+
+    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (getUserVisibleHint() && mRootView != null) {

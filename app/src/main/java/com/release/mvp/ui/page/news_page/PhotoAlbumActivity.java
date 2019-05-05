@@ -30,6 +30,7 @@ import static com.release.mvp.ui.base.Constants.PHOTO_SET_KEY;
 
 /**
  * 图集
+ *
  * @author Mr.release
  * @create 2019/4/16
  * @Describe
@@ -62,6 +63,7 @@ public class PhotoAlbumActivity extends BaseActivity<PhotoAlbumPresenter> implem
     public static void start(Context context, String newsId) {
         Intent intent = new Intent(context, PhotoAlbumActivity.class);
         intent.putExtra(PHOTO_SET_KEY, newsId);
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         context.startActivity(intent);
         ((Activity) context).overridePendingTransition(R.anim.slide_right_entry, R.anim.hold);
     }
@@ -80,11 +82,6 @@ public class PhotoAlbumActivity extends BaseActivity<PhotoAlbumPresenter> implem
         mToolBar.setToolBarBackgroundColor(R.color.transparent)
                 .setBackDrawable(R.drawable.toolbar_back_white)
                 .setTitleColor(R.color.white);
-    }
-
-    @Override
-    public void initListener() {
-
     }
 
     @Override

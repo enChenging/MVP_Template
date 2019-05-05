@@ -4,6 +4,10 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.widget.ImageView;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.release.mvp.R;
 import com.release.mvp.presenter.base.BaseView;
 import com.release.mvp.presenter.base.Presenter;
@@ -16,9 +20,6 @@ import com.trello.rxlifecycle3.components.support.RxAppCompatActivity;
 
 import javax.inject.Inject;
 
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
@@ -80,6 +81,20 @@ public abstract class BaseActivity<T extends Presenter> extends RxAppCompatActiv
         updateViews(false);
 
         AppManager.addActivity(this);
+    }
+
+    @Override
+    public void initView() {
+
+    }
+
+    @Override
+    public void initListener() {
+    }
+
+    @Override
+    public void updateViews(boolean isRefresh) {
+
     }
 
     @Override

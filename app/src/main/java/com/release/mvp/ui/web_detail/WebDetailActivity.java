@@ -78,12 +78,6 @@ public class WebDetailActivity extends BaseActivity<WebDetailActivityPresenter> 
         initData();
     }
 
-
-    @Override
-    public void initListener() {
-
-    }
-
     @Override
     public void updateViews(boolean isRefresh) {
         mPresenter.loadData();

@@ -6,6 +6,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+
 import com.flyco.tablayout.SlidingTabLayout;
 import com.release.mvp.R;
 import com.release.mvp.dao.NewsTypeInfo;
@@ -19,8 +22,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -50,15 +51,6 @@ public class NewsPage extends BaseFragment<NewsPagePresenter> implements NewsPag
     @Override
     public int getLayoutId() {
         return R.layout.page_news;
-    }
-
-    @Override
-    public void initView(View view) {
-    }
-
-    @Override
-    public void initListener() {
-
     }
 
     @OnClick({R.id.iv_setting, R.id.iv_search})

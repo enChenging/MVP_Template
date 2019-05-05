@@ -87,6 +87,7 @@ public class NewsDetailActivity extends BaseActivity<NewsDetailPresenter> implem
     public static void start(Context context, String newsId) {
         Intent intent = new Intent(context, NewsDetailActivity.class);
         intent.putExtra(NEWS_ID_KEY, newsId);
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         context.startActivity(intent);
         ((Activity) context).overridePendingTransition(R.anim.slide_right_entry, R.anim.hold);
     }
@@ -94,6 +95,7 @@ public class NewsDetailActivity extends BaseActivity<NewsDetailPresenter> implem
     private void startInside(String newsId) {
         Intent intent = new Intent(this, NewsDetailActivity.class);
         intent.putExtra(NEWS_ID_KEY, newsId);
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_bottom_entry, R.anim.hold);
     }

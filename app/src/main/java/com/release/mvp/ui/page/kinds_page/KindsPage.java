@@ -1,7 +1,5 @@
 package com.release.mvp.ui.page.kinds_page;
 
-import android.view.View;
-
 import com.release.mvp.R;
 import com.release.mvp.presenter.page.kindsPage.KindsPagePresenter;
 import com.release.mvp.presenter.page.kindsPage.KindsPageView;
@@ -23,18 +21,4 @@ public class KindsPage extends BaseFragment<KindsPagePresenter> implements Kinds
         return R.layout.page_kinds;
     }
 
-    @Override
-    public void initView(View view) {
-
-    }
-
-    @Override
-    public void initListener() {
-
-    }
-
-    @Override
-    public void updateViews(boolean isRefresh) {
-
-    }
 }

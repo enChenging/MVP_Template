@@ -14,6 +14,9 @@ android {
         versionCode rootProject.ext.android["versionCode"]
         versionName rootProject.ext.android["versionName"]
 
+        //版本名后面添加一句话，意思就是flavor dimension 它的维度就是该版本号，这样维度就是都是统一的了
+        flavorDimensions "versionCode"
+
         javaCompileOptions {
             annotationProcessorOptions {
                 includeCompileClasspath true
@@ -56,9 +59,37 @@ android {
     }
 
     lintOptions {
+        checkReleaseBuilds false
         abortOnError false
     }
 
+    productFlavors {
+        mvp {
+            applicationId "com.release.mvp"
+            resValue "string", "name", "mvp"
+            manifestPlaceholders = [app_icon     : "@mipmap/ic_launcher2",
+                                    app_roundicon: "@mipmap/ic_launcher2"]
+        }
+//        mvp2 {
+//            applicationId "com.release.mvp2"
+//            resValue "string", "name", "mvp2"
+//            manifestPlaceholders = [app_icon     : "@mipmap/ic_launcher",
+//                                    app_roundicon: "@mipmap/ic_launcher_round"]
+//        }
+    }
+
+
+    android.applicationVariants.all {
+        variant ->
+            variant.outputs.all {
+                outputFileName = "${productFlavors[0].name}_v${defaultConfig.versionName}_${buildType.name}_${releaseTime()}.apk"
+            }
+    }
+
+}
+
+static def releaseTime() {
+    return new Date().format("yyMMdd", TimeZone.getTimeZone("UTC"))
 }
 
 greendao {
@@ -73,7 +104,6 @@ dependencies {
     implementation project(':liveLib')
     testImplementation 'junit:junit:4.12'
 
-    annotationProcessor rootProject.ext.dependencies["permissions-processor"]
     annotationProcessor rootProject.ext.dependencies["butterKnife-compiler"]
     annotationProcessor rootProject.ext.dependencies["glide-compiler"]
     annotationProcessor rootProject.ext.dependencies["dagger-android-processor"]

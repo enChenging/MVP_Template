@@ -1,6 +1,7 @@
 package com.release.mvp.ui.page.video_page;
 
-import android.view.View;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 
 import com.flyco.tablayout.SlidingTabLayout;
 import com.release.mvp.R;
@@ -13,8 +14,6 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
-import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 
 /**
@@ -37,15 +36,6 @@ public class VideoPage extends BaseFragment<VideoPagePresenter> implements Video
         return R.layout.page_video;
     }
 
-    @Override
-    public void initView(View view) {
-
-    }
-
-    @Override
-    public void initListener() {
-
-    }
 
     @Override
     public void updateViews(boolean isRefresh) {

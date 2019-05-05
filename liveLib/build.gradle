@@ -26,7 +26,7 @@ dependencies {
     api rootProject.ext.dependencies["v7"]
     api rootProject.ext.dependencies["design"]
     api rootProject.ext.dependencies["cardview"]
-    api rootProject.ext.dependencies["permissions"]
+    api rootProject.ext.dependencies["rxpermissions"]
     api rootProject.ext.dependencies["rxjava"]
     api rootProject.ext.dependencies["rxandroid"]
     api rootProject.ext.dependencies["rxlifecycle"]

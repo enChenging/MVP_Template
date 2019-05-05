@@ -48,9 +48,6 @@ public class GuideActivity extends BaseActivity<GuidePersenter> implements Guide
         return R.layout.activity_guide;
     }
 
-    @Override
-    public void initView() {
-    }
 
     @Override
     public void initListener() {

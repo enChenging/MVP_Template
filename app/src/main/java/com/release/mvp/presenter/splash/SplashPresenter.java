@@ -1,23 +1,26 @@
 package com.release.mvp.presenter.splash;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.view.View;
 import android.widget.Button;
 
+import com.release.mvp.R;
 import com.release.mvp.presenter.base.BasePresenter;
 import com.release.mvp.ui.base.Constants;
 import com.release.mvp.ui.splash.SplashActivity;
 import com.release.mvp.utils.AppManager;
+import com.release.mvp.utils.InstallUtil;
 import com.release.mvp.utils.LogUtils;
 import com.release.mvp.utils.RxHelper;
 import com.release.mvp.utils.SPUtil;
 import com.release.mvp.utils.baserx.CommonSubscriber;
 import com.release.mvp.utils.baserx.RxUtil;
 import com.release.mvp.widget.dialog.NoticeDialog;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import javax.inject.Inject;
-
-import permissions.dispatcher.PermissionRequest;
 
 /**
  * @author Mr.releasel
@@ -27,12 +30,10 @@ import permissions.dispatcher.PermissionRequest;
 public class SplashPresenter extends BasePresenter<SplashView> {
 
     private static final String TAG = SplashPresenter.class.getSimpleName();
-    private NoticeInteractor noticeInteractor;
 
     @Inject
     protected SplashPresenter(SplashView view) {
         super(view);
-        noticeInteractor = new NoticeInteractor();
     }
 
     public void jump() {
@@ -46,7 +47,7 @@ public class SplashPresenter extends BasePresenter<SplashView> {
     }
 
     @SuppressLint("CheckResult")
-    public void countdown(SplashActivity activity, int time, Button mBtnJump, boolean isBack, boolean isVisiable) {
+    public void countdown(SplashActivity activity, int time, Button mBtnJump) {
         RxHelper.countdown(time)
                 .compose(activity.<Long>bindToLifecycle())
                 .compose(RxUtil.<Long>rxSchedulerHelper())
@@ -64,7 +65,8 @@ public class SplashPresenter extends BasePresenter<SplashView> {
 
                     @Override
                     protected void _onComplete() {
-                        if (!isBack && isVisiable)
+                        LogUtils.i(TAG, "_onComplete: ");
+                        if (activity.isVisiable)
                             view.goHome();
                     }
                 });
@@ -75,7 +77,48 @@ public class SplashPresenter extends BasePresenter<SplashView> {
     }
 
 
-    public void showNotice(SplashActivity context, String content, PermissionRequest mRequest, boolean isNever) {
-        NoticeDialog.show(context, content, (v -> noticeInteractor.noticeListener(context, v, mRequest, isNever)));
+    //-----------------------------------------------Permission--------------------------------------------
+    private boolean isNever;
+    public boolean hasPermission;
+    private SplashActivity mActivity;
+
+    @SuppressLint("CheckResult")
+    public void requestCameraPermissions(SplashActivity activity) {
+        mActivity = activity;
+        RxPermissions rxPermissions = new RxPermissions(activity);
+        rxPermissions.requestEachCombined
+                (Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .subscribe(permission -> {
+                    if (permission.granted) {
+                        hasPermission = true;
+                        jump();
+                    } else if (permission.shouldShowRequestPermissionRationale) {
+                        showNotice(activity, activity.getResources().getString(R.string.rationale_wr), isNever);
+                    } else {
+                        isNever = true;
+                        showNotice(activity, activity.getResources().getString(R.string.rationale_ask_again), isNever);
+                    }
+                });
+
+    }
+
+    public void showNotice(SplashActivity context, String content, boolean isNever) {
+        NoticeDialog.show(context, content, (v -> noticeListener(context, v, isNever)));
+    }
+
+    public void noticeListener(SplashActivity context, View v, boolean isNever) {
+        switch (v.getId()) {
+            case R.id.iv_close:
+            case R.id.tv_cancel:
+                context.mBtnPermission.setVisibility(View.VISIBLE);
+                break;
+            case R.id.tv_ok:
+                if (isNever)
+                    InstallUtil.startAppSettings(context);
+                else
+                    requestCameraPermissions(mActivity);
+                break;
+        }
+        NoticeDialog.dismissDialog();
     }
 }
