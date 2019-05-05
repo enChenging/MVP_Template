@@ -3,6 +3,11 @@ MVP_Template
 
 [MVP_Template](https://github.com/enChenging/MVP_Template)示例用于解释如何在我们的Android应用程序中使用MVP模式。项目代码整体干净，此项目可以用来学习MVP架构。
 
+![image](https://github.com/enChenging/MVP_Template/blob/master/src/mvc3.png)
+![image](https://github.com/enChenging/MVP_Template/blob/master/src/mvc1.png)
+![image](https://github.com/enChenging/MVP_Template/blob/master/src/mvc2.png)
+
+
 用到的第三方库
 -
 - [glide](https://github.com/bumptech/glide)
