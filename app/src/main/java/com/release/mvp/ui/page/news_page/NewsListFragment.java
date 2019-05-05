@@ -1,7 +1,15 @@
 package com.release.mvp.ui.page.news_page;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.release.mvp.R;
@@ -17,8 +25,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 
 import static com.release.mvp.ui.base.Constants.NEWS_TYPE_KEY;
@@ -47,6 +53,7 @@ public class NewsListFragment extends BaseFragment<NewsListPresenter> implements
         fragment.setArguments(bundle);
         return fragment;
     }
+
 
     @Override
     public int getLayoutId() {
@@ -87,13 +94,11 @@ public class NewsListFragment extends BaseFragment<NewsListPresenter> implements
 
     @Override
     public void loadDataView(List<NewsMultiItem> data) {
-        LogUtils.i(TAG, "loadData: " + data.size());
         mAdapter.setNewData(data);
     }
 
     @Override
     public void loadMoreDataView(List<NewsMultiItem> data) {
-        LogUtils.i(TAG, "loadMoreData: " + data.size());
         mAdapter.loadMoreComplete();
         mAdapter.addData(data);
     }
@@ -102,4 +107,5 @@ public class NewsListFragment extends BaseFragment<NewsListPresenter> implements
     public void loadNoDataView() {
         mAdapter.loadMoreEnd();
     }
+
 }

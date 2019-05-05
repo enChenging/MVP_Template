@@ -9,6 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.release.mvp.R;
 import com.release.mvp.injector.base.ChildFragmentManager;
 import com.release.mvp.presenter.base.BaseView;
@@ -21,11 +27,6 @@ import com.trello.rxlifecycle3.components.support.RxFragment;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -56,8 +57,6 @@ public abstract class BaseFragment<T extends Presenter> extends RxFragment imple
     ImageView mBack;
 
     private View mRootView;
-    private boolean mIsMulti = false;
-
 
     @Inject
     protected Context mContext;
@@ -117,35 +116,24 @@ public abstract class BaseFragment<T extends Presenter> extends RxFragment imple
             initListener();
             initCommonView();
             initSwipeRefresh();
+        } else {
+            ViewGroup parent = (ViewGroup) mRootView.getParent();
+            if (parent != null) {
+                parent.removeView(mRootView);
+
+            }
         }
-
-
-        ViewGroup parent = (ViewGroup) mRootView.getParent();
-        if (parent != null) {
-            parent.removeView(mRootView);
-        }
-
         return mRootView;
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (getUserVisibleHint() && mRootView != null && !mIsMulti) {
-            mIsMulti = true;
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (getUserVisibleHint() && mRootView != null) {
             updateViews(false);
         }
     }
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        if (isVisibleToUser && isVisible() && mRootView != null && !mIsMulti) {
-            mIsMulti = true;
-            updateViews(false);
-        } else {
-            super.setUserVisibleHint(isVisibleToUser);
-        }
-    }
 
     @Override
     public void onDestroyView() {

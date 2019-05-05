@@ -49,7 +49,7 @@ public class NewsListPresenter extends BasePresenter<NewsListView> {
     @Override
     public void loadData(boolean isRefresh) {
 
-        LogUtils.i(TAG, "loadData---mNewsId: " + mNewsId);
+        LogUtils.e("NewsListFragment", "loadData---mNewsId: " + mNewsId);
 
         RetrofitHelper
                 .getImportantNewAPI(mNewsId, mPage)
@@ -73,14 +73,14 @@ public class NewsListPresenter extends BasePresenter<NewsListView> {
                 .subscribeWith(new CommonSubscriber<List<NewsMultiItem>>() {
                     @Override
                     protected void _onNext(List<NewsMultiItem> newsMultiItems) {
-                        LogUtils.d(TAG, "loadData--accept: ");
+                        LogUtils.d(TAG, "_onNext: ");
                         view.loadDataView(newsMultiItems);
                         mPage++;
                     }
 
                     @Override
                     protected void _onError(String message) {
-                        LogUtils.d(TAG, "loadData--throwable: " + message);
+                        LogUtils.d(TAG, "_onError: " + message);
                         if (isRefresh) {
                             view.finishRefresh();
                             ToastUtils.show("刷新失败");
@@ -91,7 +91,6 @@ public class NewsListPresenter extends BasePresenter<NewsListView> {
 
                     @Override
                     protected void _onComplete() {
-                        LogUtils.d(TAG, "loadData--Action: ");
                         if (isRefresh) {
                             view.finishRefresh();
                         } else {
@@ -112,20 +111,20 @@ public class NewsListPresenter extends BasePresenter<NewsListView> {
                 .subscribeWith(new CommonSubscriber<List<NewsMultiItem>>() {
                     @Override
                     protected void _onNext(List<NewsMultiItem> newsMultiItems) {
-                        LogUtils.d(TAG, "loadMoreData--accept: ");
+                        LogUtils.d(TAG, "_onNext: ");
                         view.loadMoreDataView(newsMultiItems);
                         mPage++;
                     }
 
                     @Override
                     protected void _onError(String message) {
-                        LogUtils.d(TAG, "loadMoreData--throwable: " + message);
+                        LogUtils.d(TAG, "_onError: " + message);
                         view.loadNoDataView();
                     }
 
                     @Override
                     protected void _onComplete() {
-                        LogUtils.d(TAG, "loadMoreData--Action: ");
+                        LogUtils.d(TAG, "_onComplete: ");
                     }
                 });
     }
