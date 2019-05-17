@@ -1,1 +1,1 @@
-include ':app', ':liveLib'
+include ':app', ':lib_jar'

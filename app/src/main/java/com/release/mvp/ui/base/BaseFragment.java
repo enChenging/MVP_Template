@@ -16,7 +16,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.release.mvp.R;
-import com.release.mvp.injector.base.ChildFragmentManager;
+import com.release.mvp.dagger.base.ChildFragmentManager;
 import com.release.mvp.presenter.base.BaseView;
 import com.release.mvp.presenter.base.Presenter;
 import com.release.mvp.ui.home.MainActivity;

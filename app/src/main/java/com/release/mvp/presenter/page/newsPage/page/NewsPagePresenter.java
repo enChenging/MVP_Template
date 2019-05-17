@@ -4,10 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.release.mvp.dao.DaoSession;
 import com.release.mvp.dao.NewsTypeInfo;
 import com.release.mvp.dao.NewsTypeInfoDao;
-import com.release.mvp.injector.base.FragmentScope;
-import com.release.mvp.injector.util.ActivityScopeUtil;
-import com.release.mvp.injector.util.FragmentScopeUtil;
-import com.release.mvp.injector.util.SingletonUtil;
+import com.release.mvp.dagger.base.FragmentScope;
+import com.release.mvp.dagger.util.ActivityScopeUtil;
+import com.release.mvp.dagger.util.FragmentScopeUtil;
+import com.release.mvp.dagger.util.SingletonUtil;
 import com.release.mvp.presenter.base.BasePresenter;
 import com.release.mvp.utils.LogUtils;
 
