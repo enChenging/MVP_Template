@@ -23,7 +23,7 @@ import dagger.android.HasActivityInjector;
  */
 public class App extends Application implements HasActivityInjector {
 
-    public static App mContext;
+    private static App mContext;
 
     @Inject
     DaoSession mDaoSession;

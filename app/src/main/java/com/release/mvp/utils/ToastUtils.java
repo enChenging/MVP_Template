@@ -28,7 +28,7 @@ public class ToastUtils {
 
     public static void showToast(CharSequence s, int duration) {
         if (toast == null) {
-            toast = Toast.makeText(App.mContext, s, duration);
+            toast = Toast.makeText(App.getInstance(), s, duration);
             toast.show();
             oneTime = System.currentTimeMillis();
         } else {
@@ -47,7 +47,7 @@ public class ToastUtils {
     }
 
     public static void show(int resId) {
-        showToast(App.mContext.getString(resId), Toast.LENGTH_SHORT);
+        showToast(App.getInstance().getString(resId), Toast.LENGTH_SHORT);
     }
 
     public static void show(CharSequence message) {
@@ -60,7 +60,7 @@ public class ToastUtils {
 
 
     public static void showLong(int strResId) {
-        showToast(App.mContext.getResources().getText(strResId), Toast.LENGTH_LONG);
+        showToast(App.getInstance().getResources().getText(strResId), Toast.LENGTH_LONG);
     }
 
 
@@ -69,14 +69,14 @@ public class ToastUtils {
     }
 
     public static void show(int strResId, int duration) {
-        showToast(App.mContext.getResources().getText(strResId), duration);
+        showToast(App.getInstance().getResources().getText(strResId), duration);
     }
 
     public static Toast showToastWithImg(final String tvStr, final int imageResource) {
         if (toast2 == null) {
-            toast2 = new Toast(App.mContext);
+            toast2 = new Toast(App.getInstance());
         }
-        View view = LayoutInflater.from(App.mContext).inflate(R.layout.toast_custom, null);
+        View view = LayoutInflater.from(App.getInstance()).inflate(R.layout.toast_custom, null);
         TextView tv = (TextView) view.findViewById(R.id.toast_custom_tv);
         tv.setText(TextUtils.isEmpty(tvStr) ? "" : tvStr);
         ImageView iv = (ImageView) view.findViewById(R.id.toast_custom_iv);

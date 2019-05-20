@@ -71,7 +71,7 @@ public class RetrofitHelper {
                     HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory();
                     HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
                     interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-                    Cache cache = new Cache(new File(App.mContext.getCacheDir(), "HttpCache"), 1024 * 1024 * 10);
+                    Cache cache = new Cache(new File(App.getInstance().getCacheDir(), "HttpCache"), 1024 * 1024 * 10);
                     builder = new OkHttpClient.Builder()
                             .cache(cache)
                             .addInterceptor(new headerIntercepteor())
@@ -169,7 +169,7 @@ public class RetrofitHelper {
             // 无网络时，设置超时为1周
             int maxStale = 60 * 60 * 24 * 7;
             Request request = chain.request();
-            if (CommonUtil.isNetworkAvailable(App.mContext)) {
+            if (CommonUtil.isNetworkAvailable(App.getInstance())) {
                 //有网络时只从网络获取
                 request = request.newBuilder().cacheControl(CacheControl.FORCE_NETWORK).build();
             } else {
@@ -177,7 +177,7 @@ public class RetrofitHelper {
                 request = request.newBuilder().cacheControl(CacheControl.FORCE_CACHE).build();
             }
             Response response = chain.proceed(request);
-            if (CommonUtil.isNetworkAvailable(App.mContext)) {
+            if (CommonUtil.isNetworkAvailable(App.getInstance())) {
                 response = response.newBuilder()
                         .removeHeader("Pragma")
                         .header("Cache-Control", "public, max-age=" + maxAge)
