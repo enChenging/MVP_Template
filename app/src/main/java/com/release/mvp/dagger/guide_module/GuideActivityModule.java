@@ -1,10 +1,11 @@
 package com.release.mvp.dagger.guide_module;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.release.mvp.dagger.base.ActivityScope;
 import com.release.mvp.dagger.base.BaseActivityModule;
 import com.release.mvp.presenter.guide.GuideView;
 import com.release.mvp.ui.guide.GuideActivity;
-import com.trello.rxlifecycle3.components.support.RxAppCompatActivity;
 
 import dagger.Binds;
 import dagger.Module;
@@ -19,7 +20,7 @@ public abstract class GuideActivityModule {
 
     @Binds
     @ActivityScope
-    abstract RxAppCompatActivity activity(GuideActivity activity);
+    abstract AppCompatActivity activity(GuideActivity activity);
 
     @Binds
     @ActivityScope

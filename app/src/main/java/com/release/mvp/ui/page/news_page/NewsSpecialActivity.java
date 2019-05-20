@@ -31,6 +31,7 @@ import com.release.mvp.ui.base.BaseActivity;
 import com.release.mvp.utils.AnimateHelper;
 import com.release.mvp.utils.DefIconFactory;
 import com.release.mvp.utils.ImageLoader;
+import com.release.mvp.utils.baserx.RxUtil;
 import com.release.mvp.widget.IToolBar;
 
 import java.util.List;
@@ -173,7 +174,6 @@ public class NewsSpecialActivity extends BaseActivity<NewsSpecialPresenter> impl
     @SuppressLint("CheckResult")
     private void _handleTagLayout(List<SpecialItem> specialItems) {
         Observable.fromIterable(specialItems)
-                .compose(bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .filter(new Predicate<SpecialItem>() {
@@ -197,6 +197,7 @@ public class NewsSpecialActivity extends BaseActivity<NewsSpecialPresenter> impl
                         return _clipHeadStr(specialItem.header);
                     }
                 })
+                .as(RxUtil.bindLifecycle(this))
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(String s) throws Exception {

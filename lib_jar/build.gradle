@@ -29,9 +29,8 @@ dependencies {
     api rootProject.ext.dependencies["rxpermissions"]
     api rootProject.ext.dependencies["rxjava"]
     api rootProject.ext.dependencies["rxandroid"]
-    api rootProject.ext.dependencies["rxlifecycle"]
-    api rootProject.ext.dependencies["rxlife-android"]
-    api rootProject.ext.dependencies["rxlife-components"]
+    api rootProject.ext.dependencies["autodisposes"]
+    api rootProject.ext.dependencies["autodispose-archcomponents"]
     api(rootProject.ext.dependencies["glide"]) { exclude group: "com.android.support" }
     api rootProject.ext.dependencies["glide-annotations"]
     api rootProject.ext.dependencies["glide-okhttp3"]

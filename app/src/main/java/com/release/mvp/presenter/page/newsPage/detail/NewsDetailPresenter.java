@@ -2,6 +2,8 @@ package com.release.mvp.presenter.page.newsPage.detail;
 
 import android.annotation.SuppressLint;
 
+import androidx.lifecycle.LifecycleOwner;
+
 import com.alibaba.fastjson.JSON;
 import com.release.mvp.bean.NewsDetailInfoBean;
 import com.release.mvp.http.RetrofitHelper;
@@ -9,6 +11,7 @@ import com.release.mvp.presenter.base.BasePresenter;
 import com.release.mvp.utils.ListUtils;
 import com.release.mvp.utils.LogUtils;
 import com.release.mvp.utils.baserx.CommonSubscriber;
+import com.release.mvp.utils.baserx.RxUtil;
 
 import org.reactivestreams.Subscription;
 
@@ -58,7 +61,7 @@ public class NewsDetailPresenter extends BasePresenter<NewsDetailView> {
                         _handleRichTextWithImg(newsDetailInfoBean);
                     }
                 })
-                .compose(view.<NewsDetailInfoBean>bindToLife())
+                .as(RxUtil.bindLifecycle((LifecycleOwner) view))
                 .subscribeWith(new CommonSubscriber<NewsDetailInfoBean>() {
                     @Override
                     protected void _onNext(NewsDetailInfoBean newsDetailInfoBean) {

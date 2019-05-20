@@ -1,13 +1,14 @@
 package com.release.mvp.dagger.main_module.news_page;
 
 
+import androidx.fragment.app.Fragment;
+
 import com.release.mvp.dagger.base.BaseChildFragmentModule;
 import com.release.mvp.dagger.base.ChildFragment;
 import com.release.mvp.dagger.base.ChildFragmentScope;
 import com.release.mvp.presenter.page.newsPage.news_list.NewsListView;
 import com.release.mvp.ui.adapter.NewsListAdapter;
 import com.release.mvp.ui.page.news_page.NewsListFragment;
-import com.trello.rxlifecycle3.components.support.RxFragment;
 
 import dagger.Binds;
 import dagger.Module;
@@ -24,7 +25,7 @@ public abstract class NewsListFragmentModule {
     @Binds
     @ChildFragment
     @ChildFragmentScope
-    abstract RxFragment fragment(NewsListFragment newsListFragment);
+    abstract Fragment fragment(NewsListFragment newsListFragment);
 
     @Binds
     @ChildFragmentScope

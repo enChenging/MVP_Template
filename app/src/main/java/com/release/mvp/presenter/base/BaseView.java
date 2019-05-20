@@ -1,7 +1,5 @@
 package com.release.mvp.presenter.base;
 
-import com.trello.rxlifecycle3.LifecycleTransformer;
-
 /**
  * @author Mr.release
  * @create 2019/4/1
@@ -16,6 +14,4 @@ public interface BaseView {
     void showNetError();
 
     void finishRefresh();
-
-    <T> LifecycleTransformer<T> bindToLife();
 }

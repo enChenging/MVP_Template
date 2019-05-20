@@ -2,11 +2,14 @@ package com.release.mvp.presenter.page.newsPage.photo_album;
 
 import android.annotation.SuppressLint;
 
+import androidx.lifecycle.LifecycleOwner;
+
 import com.release.mvp.bean.PhotoSetInfoBean;
 import com.release.mvp.http.RetrofitHelper;
 import com.release.mvp.presenter.base.BasePresenter;
 import com.release.mvp.utils.LogUtils;
 import com.release.mvp.utils.baserx.CommonSubscriber;
+import com.release.mvp.utils.baserx.RxUtil;
 
 import org.reactivestreams.Subscription;
 
@@ -45,7 +48,7 @@ public class PhotoAlbumPresenter extends BasePresenter<PhotoAlbumView> {
                         view.showLoading();
                     }
                 })
-                .compose(view.bindToLife())
+                .as(RxUtil.bindLifecycle((LifecycleOwner) view))
                 .subscribeWith(new CommonSubscriber<PhotoSetInfoBean>() {
                     @Override
                     protected void _onNext(PhotoSetInfoBean photoSetInfoBean) {

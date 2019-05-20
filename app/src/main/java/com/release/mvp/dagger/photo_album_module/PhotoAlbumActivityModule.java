@@ -1,11 +1,12 @@
 package com.release.mvp.dagger.photo_album_module;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.release.mvp.dagger.base.ActivityScope;
 import com.release.mvp.dagger.base.BaseActivityModule;
 import com.release.mvp.presenter.page.newsPage.photo_album.PhotoAlbumView;
 import com.release.mvp.ui.adapter.PhotoSetAdapter;
 import com.release.mvp.ui.page.news_page.PhotoAlbumActivity;
-import com.trello.rxlifecycle3.components.support.RxAppCompatActivity;
 
 import dagger.Binds;
 import dagger.Module;
@@ -22,7 +23,7 @@ public abstract class PhotoAlbumActivityModule {
 
     @Binds
     @ActivityScope
-    abstract RxAppCompatActivity activity(PhotoAlbumActivity activity);
+    abstract AppCompatActivity activity(PhotoAlbumActivity activity);
 
     @Binds
     @ActivityScope

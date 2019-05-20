@@ -1,9 +1,10 @@
 package com.release.mvp.dagger.base;
 
-import com.release.mvp.ui.base.ViewPagerAdapter;
-import com.trello.rxlifecycle3.components.support.RxFragment;
-
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+
+import com.release.mvp.ui.base.ViewPagerAdapter;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -18,7 +19,7 @@ public abstract class BaseFragmentModule {
     @Provides
     @FragmentScope
     @ChildFragmentManager
-    static FragmentManager childFragmentManager(@Fragment RxFragment fragment) {
+    static FragmentManager childFragmentManager(@Fragmentq Fragment fragment) {
         return fragment.getChildFragmentManager();
     }
 

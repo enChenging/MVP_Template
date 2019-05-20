@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -15,8 +16,6 @@ import com.release.mvp.utils.AppManager;
 import com.release.mvp.utils.StatusBarUtil;
 import com.release.mvp.utils.SwipeRefreshHelper;
 import com.release.mvp.widget.EmptyLayout;
-import com.trello.rxlifecycle3.LifecycleTransformer;
-import com.trello.rxlifecycle3.components.support.RxAppCompatActivity;
 
 import javax.inject.Inject;
 
@@ -32,7 +31,7 @@ import dagger.android.support.HasSupportFragmentInjector;
  * @create 2019/3/22
  * @Describe
  */
-public abstract class BaseActivity<T extends Presenter> extends RxAppCompatActivity implements HasSupportFragmentInjector,
+public abstract class BaseActivity<T extends Presenter> extends AppCompatActivity implements HasSupportFragmentInjector,
         UIIterfaceAct, BaseView, EmptyLayout.OnRetryListener {
 
     protected static String TAG;
@@ -160,11 +159,6 @@ public abstract class BaseActivity<T extends Presenter> extends RxAppCompatActiv
         if (mSwipeRefresh != null) {
             mSwipeRefresh.setRefreshing(false);
         }
-    }
-
-    @Override
-    public <T> LifecycleTransformer<T> bindToLife() {
-        return this.<T>bindToLifecycle();
     }
 
 

@@ -2,6 +2,8 @@ package com.release.mvp.presenter.page.newsPage.special;
 
 import android.annotation.SuppressLint;
 
+import androidx.lifecycle.LifecycleOwner;
+
 import com.alibaba.fastjson.JSON;
 import com.release.mvp.bean.NewsItemInfoBean;
 import com.release.mvp.bean.SpecialInfoBean;
@@ -10,6 +12,7 @@ import com.release.mvp.presenter.base.BasePresenter;
 import com.release.mvp.ui.adapter.item.SpecialItem;
 import com.release.mvp.utils.LogUtils;
 import com.release.mvp.utils.baserx.CommonSubscriber;
+import com.release.mvp.utils.baserx.RxUtil;
 
 import org.reactivestreams.Publisher;
 
@@ -59,7 +62,7 @@ public class NewsSpecialPresenter extends BasePresenter<NewsSpecialView> {
                 })
                 .toList()
                 .toFlowable()
-                .compose(view.<List<SpecialItem>>bindToLife())
+                .as(RxUtil.bindLifecycle((LifecycleOwner) view))
                 .subscribeWith(new CommonSubscriber<List<SpecialItem>>() {
                     @Override
                     protected void _onNext(List<SpecialItem> specialItems) {

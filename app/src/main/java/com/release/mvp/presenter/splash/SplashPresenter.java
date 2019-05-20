@@ -49,9 +49,9 @@ public class SplashPresenter extends BasePresenter<SplashView> {
     @SuppressLint("CheckResult")
     public void countdown(SplashActivity activity, int time, Button mBtnJump) {
         RxHelper.countdown(time)
-                .compose(activity.<Long>bindToLifecycle())
                 .compose(RxUtil.<Long>rxSchedulerHelper())
                 .doOnSubscribe((disposable) -> mBtnJump.setText("跳过(6)"))
+                .as(RxUtil.bindLifecycle(activity))
                 .subscribeWith(new CommonSubscriber<Long>() {
                     @Override
                     protected void _onNext(Long aLong) {

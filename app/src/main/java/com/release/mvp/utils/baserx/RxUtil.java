@@ -2,9 +2,14 @@ package com.release.mvp.utils.baserx;
 
 import android.text.TextUtils;
 
+import androidx.lifecycle.LifecycleOwner;
+
 import com.release.mvp.App;
 import com.release.mvp.utils.ToastUtils;
 import com.release.mvp.utils.response.BaseResponse;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.AutoDisposeConverter;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
@@ -21,6 +26,17 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class RxUtil {
+
+    private RxUtil() {
+        throw new IllegalStateException("Can't instance the RxUtil");
+    }
+
+    public static <T> AutoDisposeConverter<T> bindLifecycle(LifecycleOwner lifecycleOwner) {
+
+        return AutoDispose.autoDisposable(
+                AndroidLifecycleScopeProvider.from(lifecycleOwner)
+        );
+    }
 
     /**
      * 统一线程处理

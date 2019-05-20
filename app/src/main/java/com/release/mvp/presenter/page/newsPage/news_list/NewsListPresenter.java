@@ -2,6 +2,8 @@ package com.release.mvp.presenter.page.newsPage.news_list;
 
 import android.annotation.SuppressLint;
 
+import androidx.lifecycle.LifecycleOwner;
+
 import com.release.mvp.bean.NewsInfoBean;
 import com.release.mvp.http.RetrofitHelper;
 import com.release.mvp.presenter.base.BasePresenter;
@@ -10,6 +12,7 @@ import com.release.mvp.utils.LogUtils;
 import com.release.mvp.utils.NewsUtils;
 import com.release.mvp.utils.ToastUtils;
 import com.release.mvp.utils.baserx.CommonSubscriber;
+import com.release.mvp.utils.baserx.RxUtil;
 
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscription;
@@ -70,6 +73,7 @@ public class NewsListPresenter extends BasePresenter<NewsListView> {
                     }
                 })
                 .compose(observableTransformer)
+                .as(RxUtil.bindLifecycle((LifecycleOwner) view))
                 .subscribeWith(new CommonSubscriber<List<NewsMultiItem>>() {
                     @Override
                     protected void _onNext(List<NewsMultiItem> newsMultiItems) {
@@ -108,6 +112,7 @@ public class NewsListPresenter extends BasePresenter<NewsListView> {
         RetrofitHelper
                 .getImportantNewAPI("T1348647909107", mPage)
                 .compose(observableTransformer)
+                .as(RxUtil.bindLifecycle((LifecycleOwner) view))
                 .subscribeWith(new CommonSubscriber<List<NewsMultiItem>>() {
                     @Override
                     protected void _onNext(List<NewsMultiItem> newsMultiItems) {
@@ -147,8 +152,7 @@ public class NewsListPresenter extends BasePresenter<NewsListView> {
                         }
                     })
                     .toList()
-                    .toFlowable()
-                    .compose(view.<List<NewsMultiItem>>bindToLife());
+                    .toFlowable();
         }
     };
 }

@@ -40,6 +40,7 @@ public class PhotoAlbumActivity extends BaseActivity<PhotoAlbumPresenter> implem
 
     @Inject
     PhotoSetAdapter mAdapter;
+
     @BindView(R.id.vp_photo)
     PhotoViewPager mVpPhoto;
     @BindView(R.id.tv_title2)

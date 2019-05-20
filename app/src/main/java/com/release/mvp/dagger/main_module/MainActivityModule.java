@@ -1,5 +1,7 @@
 package com.release.mvp.dagger.main_module;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.release.mvp.dagger.base.ActivityScope;
 import com.release.mvp.dagger.base.BaseActivityModule;
 import com.release.mvp.dagger.base.FragmentScope;
@@ -13,7 +15,6 @@ import com.release.mvp.ui.page.kinds_page.KindsPage;
 import com.release.mvp.ui.page.news_page.NewsPage;
 import com.release.mvp.ui.page.recommend_page.RecommendPage;
 import com.release.mvp.ui.page.video_page.VideoPage;
-import com.trello.rxlifecycle3.components.support.RxAppCompatActivity;
 
 import dagger.Binds;
 import dagger.Module;
@@ -29,7 +30,7 @@ public abstract class MainActivityModule {
 
     @Binds
     @ActivityScope
-    abstract RxAppCompatActivity activity(MainActivity activity);
+    abstract AppCompatActivity activity(MainActivity activity);
 
     @Binds
     @ActivityScope

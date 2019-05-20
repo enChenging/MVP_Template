@@ -2,7 +2,10 @@ package com.release.mvp.presenter.web_detail;
 
 import android.annotation.SuppressLint;
 
+import androidx.lifecycle.LifecycleOwner;
+
 import com.release.mvp.presenter.base.BasePresenter;
+import com.release.mvp.utils.baserx.RxUtil;
 
 import java.util.concurrent.TimeUnit;
 
@@ -32,8 +35,8 @@ public class WebDetailActivityPresenter extends BasePresenter<WebDetailActivityV
     @SuppressLint("CheckResult")
     public void loadFinish() {
         Observable.timer(1500, TimeUnit.MILLISECONDS)
-                .compose(view.<Long>bindToLife())
                 .observeOn(AndroidSchedulers.mainThread())
+                .as(RxUtil.bindLifecycle((LifecycleOwner) view))
                 .subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(Long aLong) throws Exception {

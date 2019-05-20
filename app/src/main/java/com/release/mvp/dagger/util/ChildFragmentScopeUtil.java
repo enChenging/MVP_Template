@@ -16,29 +16,30 @@
 
 package com.release.mvp.dagger.util;
 
+import androidx.fragment.app.Fragment;
+
 import com.release.mvp.dagger.base.ChildFragment;
 import com.release.mvp.dagger.base.ChildFragmentScope;
-import com.trello.rxlifecycle3.components.support.RxFragment;
 
 import javax.inject.Inject;
 
 /**
  * A class that does something.
  * <p>
- * This class has the {@link ChildFragmentScope} scope. This means that the child Fragment (a fragment
- * inside a fragment that is added using Fragment.getChildFragmentManager()) and all of its
+ * This class has the {@link ChildFragmentScope} scope. This means that the child Fragmentq (a fragment
+ * inside a fragment that is added using Fragmentq.getChildFragmentManager()) and all of its
  * dependencies will share the same instance of this class. However, different child fragments
  * instances will have their own instances of this class.
  * <p>
- * This is not available at the parent Fragment, Activity, and Application.
+ * This is not available at the parent Fragmentq, Activity, and Application.
  */
 @ChildFragmentScope
 public final class ChildFragmentScopeUtil {
 
-    private final RxFragment childFragment;
+    private final Fragment childFragment;
 
     @Inject
-    ChildFragmentScopeUtil(@ChildFragment RxFragment childFragment) {
+    ChildFragmentScopeUtil(@ChildFragment Fragment childFragment) {
         this.childFragment = childFragment;
     }
 
@@ -48,6 +49,6 @@ public final class ChildFragmentScopeUtil {
      */
     public String doSomething() {
         return "ChildFragmentScopeUtil: " + hashCode()
-                + ", child Fragment: " + childFragment.hashCode();
+                + ", child Fragmentq: " + childFragment.hashCode();
     }
 }

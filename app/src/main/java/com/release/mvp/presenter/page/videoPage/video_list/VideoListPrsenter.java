@@ -2,6 +2,8 @@ package com.release.mvp.presenter.page.videoPage.video_list;
 
 import android.annotation.SuppressLint;
 
+import androidx.lifecycle.LifecycleOwner;
+
 import com.release.mvp.dao.VideoInfo;
 import com.release.mvp.http.RetrofitHelper;
 import com.release.mvp.presenter.base.BasePresenter;
@@ -9,6 +11,7 @@ import com.release.mvp.ui.page.video_page.VideoListFragment;
 import com.release.mvp.utils.LogUtils;
 import com.release.mvp.utils.ToastUtils;
 import com.release.mvp.utils.baserx.CommonSubscriber;
+import com.release.mvp.utils.baserx.RxUtil;
 
 import org.reactivestreams.Subscription;
 
@@ -49,17 +52,18 @@ public class VideoListPrsenter extends BasePresenter<VideoListView> {
                         }
                     }
                 })
-                .compose(view.bindToLife())
+                .as(RxUtil.bindLifecycle((LifecycleOwner) view))
                 .subscribeWith(new CommonSubscriber<List<VideoInfo>>() {
                     @Override
                     protected void _onNext(List<VideoInfo> videoInfos) {
-                        LogUtils.i(TAG, "accept: " + videoInfos);
+                        LogUtils.i(TAG, "_onNext: " + videoInfos);
                         view.loadDataView(videoInfos);
                         mPage++;
                     }
 
                     @Override
                     protected void _onError(String message) {
+                        LogUtils.e(TAG, "_onError: " + message);
                         if (isRefresh) {
                             view.finishRefresh();
                             ToastUtils.show("刷新失败");
@@ -70,7 +74,7 @@ public class VideoListPrsenter extends BasePresenter<VideoListView> {
 
                     @Override
                     protected void _onComplete() {
-                        LogUtils.i(TAG, "run: ");
+                        LogUtils.i(TAG, "_onComplete: ");
                         if (isRefresh) {
                             view.finishRefresh();
                         } else {
@@ -86,11 +90,11 @@ public class VideoListPrsenter extends BasePresenter<VideoListView> {
 
         RetrofitHelper
                 .getVideoListAPI(mVideoListFragment.mVideoId, mPage)
-                .compose(view.bindToLife())
+                .as(RxUtil.bindLifecycle((LifecycleOwner) view))
                 .subscribeWith(new CommonSubscriber<List<VideoInfo>>() {
                     @Override
                     protected void _onNext(List<VideoInfo> videoInfos) {
-                        LogUtils.i(TAG, "loadMoreData---accept: " + videoInfos);
+                        LogUtils.i(TAG, "_onNext: " + videoInfos);
                         view.loadMoreDataView(videoInfos);
                         mPage++;
 
@@ -98,13 +102,13 @@ public class VideoListPrsenter extends BasePresenter<VideoListView> {
 
                     @Override
                     protected void _onError(String message) {
-                        LogUtils.e(TAG, "loadMoreData---throwable: " + message);
+                        LogUtils.e(TAG, "_onError: " + message);
                         view.loadNoDataView();
                     }
 
                     @Override
                     protected void _onComplete() {
-                        LogUtils.i(TAG, "loadMoreData---run: ");
+                        LogUtils.i(TAG, "_onComplete: ");
                     }
                 });
     }

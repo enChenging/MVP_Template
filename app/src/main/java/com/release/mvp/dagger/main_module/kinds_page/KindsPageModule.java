@@ -1,11 +1,12 @@
 package com.release.mvp.dagger.main_module.kinds_page;
 
+import androidx.fragment.app.Fragment;
+
 import com.release.mvp.dagger.base.BaseFragmentModule;
-import com.release.mvp.dagger.base.Fragment;
+import com.release.mvp.dagger.base.Fragmentq;
 import com.release.mvp.dagger.base.FragmentScope;
 import com.release.mvp.presenter.page.kindsPage.KindsPageView;
 import com.release.mvp.ui.page.kinds_page.KindsPage;
-import com.trello.rxlifecycle3.components.support.RxFragment;
 
 import dagger.Binds;
 import dagger.Module;
@@ -19,9 +20,9 @@ import dagger.Module;
 public abstract class KindsPageModule {
 
     @Binds
-    @Fragment
+    @Fragmentq
     @FragmentScope
-    abstract RxFragment fragment(KindsPage kindsPage);
+    abstract Fragment fragment(KindsPage kindsPage);
 
     @Binds
     @FragmentScope

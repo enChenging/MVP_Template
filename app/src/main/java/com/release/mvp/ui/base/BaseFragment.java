@@ -22,8 +22,6 @@ import com.release.mvp.presenter.base.Presenter;
 import com.release.mvp.ui.home.MainActivity;
 import com.release.mvp.utils.SwipeRefreshHelper;
 import com.release.mvp.widget.EmptyLayout;
-import com.trello.rxlifecycle3.LifecycleTransformer;
-import com.trello.rxlifecycle3.components.support.RxFragment;
 
 import javax.inject.Inject;
 
@@ -40,7 +38,7 @@ import dagger.android.support.HasSupportFragmentInjector;
  * @create 2019/3/22
  * @Describe
  */
-public abstract class BaseFragment<T extends Presenter> extends RxFragment implements HasSupportFragmentInjector,
+public abstract class BaseFragment<T extends Presenter> extends Fragment implements HasSupportFragmentInjector,
         UIIterfaceFrag, BaseView, EmptyLayout.OnRetryListener {
 
     public MainActivity mActivity;
@@ -109,26 +107,23 @@ public abstract class BaseFragment<T extends Presenter> extends RxFragment imple
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        if (mRootView == null) {
-            mRootView = LayoutInflater.from(getActivity()).inflate(getLayoutId(), null);
-            mUnbinder = ButterKnife.bind(this, mRootView);
-            initView(mRootView);
-            initListener();
-            initCommonView();
-            initSwipeRefresh();
-        } else {
-            ViewGroup parent = (ViewGroup) mRootView.getParent();
-            if (parent != null) {
-                parent.removeView(mRootView);
+        return inflater.inflate(getLayoutId(), null);
+    }
 
-            }
-        }
-        return mRootView;
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        mUnbinder = ButterKnife.bind(this, view);
+        initView(view);
+        initListener();
+        initSwipeRefresh();
+        updateViews(false);
     }
 
     @Override
     public void initView(View view) {
-        
+
     }
 
     @Override
@@ -139,15 +134,6 @@ public abstract class BaseFragment<T extends Presenter> extends RxFragment imple
     public void updateViews(boolean isRefresh) {
 
     }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        if (getUserVisibleHint() && mRootView != null) {
-            updateViews(false);
-        }
-    }
-
 
     @Override
     public void onDestroyView() {
@@ -221,8 +207,4 @@ public abstract class BaseFragment<T extends Presenter> extends RxFragment imple
         }
     }
 
-    @Override
-    public <T> LifecycleTransformer<T> bindToLife() {
-        return this.<T>bindToLifecycle();
-    }
 }
