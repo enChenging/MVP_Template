@@ -11,7 +11,7 @@ import com.release.mvp.presenter.guide.GuidePersenter;
 import com.release.mvp.presenter.guide.GuideView;
 import com.release.mvp.ui.adapter.GuideViewPagerAdapter;
 import com.release.mvp.ui.base.BaseActivity;
-import com.release.mvp.ui.home.MainActivity;
+import com.release.mvp.MainActivity;
 import com.release.mvp.utils.StatusBarUtil;
 import com.release.mvp.widget.pageTransformer.CubeOutTransformer;
 

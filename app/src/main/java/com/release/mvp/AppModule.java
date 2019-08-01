@@ -13,7 +13,6 @@ import com.release.mvp.dagger.photo_album_module.PhotoAlbumActivityModule;
 import com.release.mvp.dagger.splash_module.SplashActivityModule;
 import com.release.mvp.dagger.web_detail_module.WebDetailActivityModule;
 import com.release.mvp.ui.guide.GuideActivity;
-import com.release.mvp.ui.home.MainActivity;
 import com.release.mvp.ui.page.news_page.NewsDetailActivity;
 import com.release.mvp.ui.page.news_page.NewsSpecialActivity;
 import com.release.mvp.ui.page.news_page.PhotoAlbumActivity;

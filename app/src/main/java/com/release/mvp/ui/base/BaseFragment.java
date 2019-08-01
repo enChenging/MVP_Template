@@ -19,7 +19,7 @@ import com.release.mvp.R;
 import com.release.mvp.dagger.base.ChildFragmentManager;
 import com.release.mvp.presenter.base.BaseView;
 import com.release.mvp.presenter.base.Presenter;
-import com.release.mvp.ui.home.MainActivity;
+import com.release.mvp.MainActivity;
 import com.release.mvp.utils.SwipeRefreshHelper;
 import com.release.mvp.widget.EmptyLayout;
 

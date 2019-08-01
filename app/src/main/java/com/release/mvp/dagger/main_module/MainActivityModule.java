@@ -10,7 +10,7 @@ import com.release.mvp.dagger.main_module.news_page.NewsPageModule;
 import com.release.mvp.dagger.main_module.recommend_page.RecommendPageModule;
 import com.release.mvp.dagger.main_module.video_page.VideoPageModule;
 import com.release.mvp.presenter.home.MainView;
-import com.release.mvp.ui.home.MainActivity;
+import com.release.mvp.MainActivity;
 import com.release.mvp.ui.page.kinds_page.KindsPage;
 import com.release.mvp.ui.page.news_page.NewsPage;
 import com.release.mvp.ui.page.recommend_page.RecommendPage;

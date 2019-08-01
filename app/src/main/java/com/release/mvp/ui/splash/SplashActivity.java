@@ -9,7 +9,7 @@ import com.release.mvp.presenter.splash.SplashPresenter;
 import com.release.mvp.presenter.splash.SplashView;
 import com.release.mvp.ui.base.BaseActivity;
 import com.release.mvp.ui.guide.GuideActivity;
-import com.release.mvp.ui.home.MainActivity;
+import com.release.mvp.MainActivity;
 import com.release.mvp.utils.StatusBarUtil;
 
 import butterknife.BindView;

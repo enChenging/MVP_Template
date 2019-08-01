@@ -8,7 +8,7 @@ import com.release.mvp.dagger.base.Fragmentq;
 import com.release.mvp.dagger.base.FragmentScope;
 import com.release.mvp.presenter.page.recommendPage.RecommendPageView;
 import com.release.mvp.ui.adapter.RecommendAdapter;
-import com.release.mvp.ui.home.MainActivity;
+import com.release.mvp.MainActivity;
 import com.release.mvp.ui.page.recommend_page.RecommendPage;
 
 import dagger.Binds;

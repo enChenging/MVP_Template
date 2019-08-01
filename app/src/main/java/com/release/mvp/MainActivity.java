@@ -1,4 +1,4 @@
-package com.release.mvp.ui.home;
+package com.release.mvp;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
-import com.release.mvp.R;
 import com.release.mvp.presenter.home.MainPersenter;
 import com.release.mvp.presenter.home.MainView;
 import com.release.mvp.ui.base.BaseActivity;
@@ -155,7 +154,7 @@ public class MainActivity extends BaseActivity<MainPersenter> implements MainVie
 
     @Override
     protected void setStatusBar() {
-        StatusBarUtil.setColorForDrawerLayout(this, mDlDrawer, getResources().getColor(R.color.colorPrimary), 0);
+        StatusBarUtil.setColorNoTranslucentForDrawerLayout(this, mDlDrawer, getResources().getColor(R.color.colorPrimary));
     }
 
 

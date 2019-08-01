@@ -3,7 +3,7 @@ package com.release.mvp.presenter.home;
 import android.widget.Toast;
 
 import com.release.mvp.presenter.base.BasePresenter;
-import com.release.mvp.ui.home.MainActivity;
+import com.release.mvp.MainActivity;
 import com.release.mvp.utils.AppManager;
 
 import javax.inject.Inject;
